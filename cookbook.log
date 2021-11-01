@@ -35,3 +35,14 @@
 npx create-next-app@latest --ts
 
 & "C:\Program Files\Git\bin\sh.exe" --login
+
+echo "# girl_blog" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git add .
+git remote add origin https://github.com/tom4f/covid-graphs.git
+git branch -M main
+git push -u origin main
+
+npm i -g vercel
