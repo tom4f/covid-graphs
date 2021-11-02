@@ -1,24 +1,28 @@
 import { ShowYearGraphCanvas } from '../components/ShowYearGraphCanvas'
 
-export default function Home( { allArticles, allArticles1 } ) {
-
-    //console.log( allArticles.data.length )
-
-    return  <ShowYearGraphCanvas pdoRespNew={allArticles.data} pdoRespNew1={allArticles1.data} />
-
+export default function Home( { allArticles, allArticles1, allArticles2 } ) {
+    return  <ShowYearGraphCanvas covidData={allArticles.data} covidData1={allArticles1.data} covidData2={allArticles2.data} />
 }
 
-
 export const getStaticProps = async () => { 
-    const resp = await fetch( 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/testy-pcr-antigenni.min.json' )
-    const respText = await resp.text()
-    const allArticles = JSON.parse( respText )
 
-    const resp1 = await fetch( 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/hospitalizace.json' )
-    const respText1 = await resp1.text()
-    const allArticles1 = JSON.parse( respText1 )
+    const serverPath = 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19'
+
+    const urlList = [
+        'ockovani-pozitivni65.json',
+        'ockovani-pozitivni.json',
+        'ockovani-hospitalizace.json'
+    ]
+
+    const fetchList = urlList.map( url =>
+        fetch( `${serverPath}/${url}` )
+            .then( resp => resp.json() )
+    )
+
+    const [ allArticles, allArticles1, allArticles2 ] = await Promise.all( fetchList )
+
     return {
-        props: { allArticles, allArticles1 }  ,
+        props: { allArticles, allArticles1, allArticles2 },
         revalidate: 10,
     }
 }
