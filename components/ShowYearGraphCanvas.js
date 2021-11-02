@@ -3,8 +3,10 @@ import { apiPath } from './apiPath.js'
 import Draw from './Draw';
 
 
-export const ShowYearGraphCanvas = () => {
+export const ShowYearGraphCanvas = ( { pdoRespNew, pdoRespNew1 } ) => {
     
+    console.log(pdoRespNew[0])
+
     const graphHeight = 3;
     let pdoResp = [];
     let isAllDownloaded = false;
@@ -57,17 +59,6 @@ export const ShowYearGraphCanvas = () => {
 
         // start AJAX async
         const loadPocasiAsync = async () => {
-            try { 
-                console.time('Start');
-                pdoResp = await loadPocasi();
-                console.timeEnd('Start');
-            }
-                catch (err) {
-                    console.log(err)
-                    return null;
-                }
-
-            if (pdoResp.length === 0) return null;
 
             const canvas = canvasRef.current;
             const canvas_pointer = canvas_pointerRef.current;
@@ -82,8 +73,8 @@ export const ShowYearGraphCanvas = () => {
                 const canvasSize = ( can, can_pointer, size ) => {
                     const clientWidth  = document.documentElement.clientWidth;
                     const clientHeight = document.documentElement.clientHeight;
-                    can.width  = clientWidth > 724 ? 724 : clientWidth;
-                    //can.width  = clientWidth;
+                    //can.width  = clientWidth > 724 ? 724 : clientWidth;
+                    can.width  = clientWidth;
                     //can.height = clientHeight / size;
                     can.height = 300;
                     can_pointer.width  = clientWidth;
@@ -104,16 +95,15 @@ export const ShowYearGraphCanvas = () => {
 
 
             const hladina     = new Draw(
-                [ canvas, canvas_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi ]
-                , [ 'pritok' , 'lime' , 'line', 2, 'pritok [m\xB3/s]', 1, [] ]
-                , [ 'hladina', 'red', 'line', 2, 'hladina [m n.m.]', 2, [] ]
-                , [ 'odtok'  , 'white' , 'line', 2, 'odtok [m\xB3/s]' , 1, [] ]
+                [ canvas, canvas_pointer, dateStorage, pdoRespNew, isAllDownloaded, loadPocasi ]
+                , [ 'pocet_PCR_testy' , 'lime' , 'line', 2, 'pocet_PCR_testy', 1, [] ]
+                , [ 'pocet_AG_testy', 'red', 'line', 2, 'pocet_AG_testy', 1, [] ]
             ); 
         
             const teplota     = new Draw(
-                [ canvas1, canvas1_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi ]
-                , [ 'voda'  , 'white', 'line', 2, 'voda [\xB0C]'  , 1, [] ]
-                , [ 'vzduch', 'lime' , 'line', 2, 'vzduch ráno [\xB0C]', 1, []  ]
+                [ canvas1, canvas1_pointer, dateStorage, pdoRespNew1, isAllDownloaded, loadPocasi ]
+                , [ 'pocet_hosp', 'white', 'line', 2, 'pocet_hosp', 1, [] ]
+                , [ 'umrti'     , 'lime' , 'line', 2, 'umrti'     , 2, [] ]
             ); 
 
 

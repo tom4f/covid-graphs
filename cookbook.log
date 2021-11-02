@@ -11,6 +11,13 @@
 [2.2] date line (X axes) extracted from JSON parameter: datum":"2020-09-02"
 [2.3] source JSON file is updated 1x / day -> incremental server side rendering is enought
 [2.4] 
+export const getStaticProps = async () => { 
+    const allArticles = await fetchAllArticles()
+    return {
+        props: allArticles,
+        revalidate: 10,
+    }
+}
 
 
 [3]   ========== Google Adsense =============

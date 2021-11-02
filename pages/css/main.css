@@ -13,7 +13,7 @@ body {
   background: black;
   margin: auto;
   width: 100%;
-  max-width: 724px;
+  max-width: 1480px;
 }
 
 .bottom {
@@ -42,13 +42,13 @@ body {
 .mainpictures {
   text-align: center;
   width: 100%;
-  max-width: 724px;
+  max-width: 1480px;
 }
 
 .mainpictures img {
   vertical-align: top;
   width: 100%;
-  max-width: 724px;
+  max-width: 1480px;
 }
 
 /* -------------------------index.html */
@@ -128,7 +128,7 @@ body {
 .davis_table {
   background: white;
   color: black;
-  width: 724px;
+  width: 1480px;
   font-size: 0px;
 }
 
@@ -147,7 +147,7 @@ body {
 .meteo_box {
   position: absolute;
   width: auto;
-  max-width: 724px;
+  max-width: 1480px;
   height: auto;
   background-color: rgba(0, 0, 0, 0.4);
   left: 50%;
