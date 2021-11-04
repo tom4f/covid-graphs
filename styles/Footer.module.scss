@@ -1,8 +1,8 @@
 .footer_container {
   display: flex;
   padding: 5px;
-  background: #000;
-  color: #fff;  
+  background: #fff;
+  color: #000;  
   align-items: center;
   height: 31px;
   justify-content: space-evenly;
@@ -12,8 +12,13 @@
   line-height: 1.15;
   font-size: 1.5rem;
   color: red;
-}
 
-.logo span {
-  color: #0070f3;
+  a {
+    color: grey;
+    text-decoration: none;
+
+    &:hover {
+      color: #000;
+    }
+  }
 }

@@ -1,7 +1,10 @@
 import { ShowYearGraphCanvas } from '../components/ShowYearGraphCanvas'
 
-export default function Home( { allArticles, allArticles1, allArticles2 } ) {
-    return  <ShowYearGraphCanvas covidData={allArticles.data} covidData1={allArticles1.data} covidData2={allArticles2.data} />
+export default function Home( props ) {
+    
+    return (
+        <ShowYearGraphCanvas props={props} />
+    )
 }
 
 export const getStaticProps = async () => { 
@@ -9,9 +12,9 @@ export const getStaticProps = async () => {
     const serverPath = 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19'
 
     const urlList = [
-        'ockovani-pozitivni65.json',
-        'ockovani-pozitivni.json',
-        'ockovani-hospitalizace.json'
+        'ockovani-pozitivni65.min.json',
+        'ockovani-pozitivni.min.json',
+        'ockovani-hospitalizace.min.json'
     ]
 
     const fetchList = urlList.map( url =>
@@ -19,10 +22,14 @@ export const getStaticProps = async () => {
             .then( resp => resp.json() )
     )
 
-    const [ allArticles, allArticles1, allArticles2 ] = await Promise.all( fetchList )
+    const respAll = await Promise.allSettled( fetchList )
+
+    const respAllFulfilled = respAll.map( one => {
+        return one.status === 'fulfilled' ? one.value.data : false
+    })
 
     return {
-        props: { allArticles, allArticles1, allArticles2 },
+        props: { respAllFulfilled },
         revalidate: 10,
     }
 }

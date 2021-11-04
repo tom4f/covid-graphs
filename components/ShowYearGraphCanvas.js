@@ -2,8 +2,11 @@ import React, { useRef, useEffect } from 'react';
 import Draw from './Draw';
 
 
-export const ShowYearGraphCanvas = ( { covidData, covidData1, covidData2 } ) => {
+export const ShowYearGraphCanvas = ( { props: { respAllFulfilled } } ) => {
+
+    //if ( !respAllFulfilled ) return ( <>loading....</> )
     
+    const [ covidData, covidData1, covidData2 ] = respAllFulfilled
 
     const graphHeight = 3;
 
