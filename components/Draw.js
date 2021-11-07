@@ -1,16 +1,21 @@
-
 export default class Draw {
 
-    constructor( common, ...graphs) {
-        [
-        this.canvas,
-        this.canvas_pointer,
-        this.date,
-        this.pdoResp,
-        this.isAllDownloaded,
-        this.loadPocasi ] = common;
+    constructor( canvas, canvas_pointer, graphsConfig ) {
+        
+        this.canvas = canvas;
+        this.canvas_pointer = canvas_pointer;
+        
+        this.pdoResp = graphsConfig.data;
 
-        this.graphs = graphs;
+        this.common = graphsConfig.common;
+
+        this.date            = this.common.dateField;
+        this.isAllDownloaded = this.common.isAllDownloaded;
+        this.loadPocasi      = this.common.loadDataFunction;
+
+        this.graphs = graphsConfig.specific;
+
+        console.log( this.graphs )
 
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
@@ -67,8 +72,8 @@ export default class Draw {
 
                 this.dataReduced.forEach( value => {
                     for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
-                        const type = this.graphs[graphNumber][0];
-                        if(this.graphs[graphNumber][5] === 1){
+                        const type = this.graphs[graphNumber].sourceField;
+                        if(this.graphs[graphNumber].group === 1){
                             if ( isNaN(value[type]) ) {
                                 return null
                             } else {
@@ -76,7 +81,7 @@ export default class Draw {
                             }
                         }
 
-                        if(this.graphs[graphNumber][5] === 2){
+                        if(this.graphs[graphNumber].group === 2){
                             if ( isNaN(value[type]) ) {
                                 return null
                             } else {
@@ -364,7 +369,7 @@ export default class Draw {
                     this.ctx_pointer.fillText(` ${ valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
                 }
                 // calculate y for graph 
-                const firstInfoType  = this.graphs[0][0];
+                const firstInfoType  = this.graphs[0].sourceField;
                 const y = this.yPositionFromDate(valueY[firstInfoType], this.min, this.max);
                 infoLeftY( firstInfoType, y );
 
@@ -372,8 +377,8 @@ export default class Draw {
 
                 // 2nd graph in canvas
                 let ySecond;
-                const secondInfoType = this.graphs[1][0];
-                const secondGroup = this.graphs[1][5]
+                const secondInfoType = this.graphs[1].sourceField;
+                const secondGroup = this.graphs[1].group
                 if (secondGroup === 1) ySecond = this.yPositionFromDate(valueY[secondInfoType], this.min, this.max);
                 if (secondGroup === 2) ySecond = this.yPositionFromDate(valueY[secondInfoType], this.minSecond, this.maxSecond);
                 infoRightY(secondInfoType, ySecond);
@@ -588,14 +593,16 @@ export default class Draw {
         this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
 
         this.graphSelect = (graphNumber) =>{
-            [   this.type,
-                this.color,
-                this.design,
-                this.lineWidth,
-                this.header,
-                this.group,
-                this.lineDash
-            ] = this.graphs[graphNumber];
+            
+            const { sourceField, color, style, width, header, group, lineStyle } = this.graphs[graphNumber];
+            this.type = sourceField
+            this.color = color
+            this.design = style
+            this.lineWidth = width
+            this.header = header
+            this.group = group
+            this.lineDash = lineStyle
+            
         }
 
         // show all graphs
@@ -644,7 +651,7 @@ export default class Draw {
             const line = oneEntry => {
 
                 // do not show direction if no wind
-                if ( this.graphs[graphNumber][0] === 'WindDir' && oneEntry[this.graphs[graphNumber][0]] === 360 ) return null;
+                if ( this.graphs[graphNumber].sourceField === 'WindDir' && oneEntry[this.graphs[graphNumber].sourceField] === 360 ) return null;
 
                 // for graph type = area
                 if( this.design === 'dot') {
@@ -652,11 +659,11 @@ export default class Draw {
                     //this.ctx.beginPath();
                     this.ctx.moveTo(
                         this.xPositionFromDate(oneEntry[this.date]) + this.lineWidth,
-                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max)
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max)
                     )
                     this.ctx.arc(
                         this.xPositionFromDate(oneEntry[this.date]),
-                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max),
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max),
                         this.lineWidth,
                         0, 2 * Math.PI
                     )
@@ -668,12 +675,12 @@ export default class Draw {
                                     this.clientHeight - this.graphSpaceBtn);
 
                     this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max));
+                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
                 }
 
                 if (this.design === 'line') {
                     this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max));
+                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
                 }
 
             }

@@ -1,26 +1,19 @@
-import { ShowYearGraphCanvas } from '../components/ShowYearGraphCanvas'
+import { OneGraph } from '../components/OneGraph'
+import { graphsConfig } from './../config/graphsConfig'
 
-export default function Home( props ) {
-    
+export default function Home( { graphs } ) {
     return (
-        <ShowYearGraphCanvas props={props} />
+        <>
+            { graphs.map( (oneGraphData, index) => oneGraphData.data && <OneGraph key={index} graphsConfig={oneGraphData}/> ) }
+        </>
     )
 }
 
 export const getStaticProps = async () => { 
 
-    const serverPath = 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19'
+    const urlList = graphsConfig.map( value => value.common.url )
 
-    const urlList = [
-        'ockovani-pozitivni65.min.json',
-        'ockovani-pozitivni.min.json',
-        'ockovani-hospitalizace.min.json'
-    ]
-
-    const fetchList = urlList.map( url =>
-        fetch( `${serverPath}/${url}` )
-            .then( resp => resp.json() )
-    )
+    const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
 
     const respAll = await Promise.allSettled( fetchList )
 
@@ -28,8 +21,10 @@ export const getStaticProps = async () => {
         return one.status === 'fulfilled' ? one.value.data : false
     })
 
+    const graphs = graphsConfig.map( (value, index) => ( { data: respAllFulfilled[index], ...value } ) )
+
     return {
-        props: { respAllFulfilled },
+        props: { graphs },
         revalidate: 10,
     }
 }

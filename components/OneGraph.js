@@ -1,0 +1,42 @@
+import React, { useRef, useEffect } from 'react';
+import Draw from './Draw';
+import oneGraphStyles from '../styles/OneGraph.module.scss'
+
+export const OneGraph = ( { graphsConfig } ) => {
+
+    const graphHeight        = 300;
+    const canvasRef          = useRef( null );
+    const canvas_pointerRef  = useRef( null );
+
+    const loadPocasiAsync = async () => {
+        const canvas         = canvasRef.current;
+        const canvas_pointer = canvas_pointerRef.current;
+        
+
+
+        const oneDraw = new Draw( canvas, canvas_pointer, graphsConfig ); 
+
+        const showGraph = ( canvas, canvas_pointer, graphHeight ) => {
+            const clientWidth  = document.documentElement.clientWidth;
+            //const clientHeight = document.documentElement.clientHeight;
+            canvas.width  = clientWidth;
+            canvas.height = graphHeight;
+            canvas_pointer.width  = clientWidth;
+            canvas_pointer.height = graphHeight;    
+            oneDraw.resizeCanvas(); // resize means show graph :-)
+        }
+
+        showGraph(canvas, canvas_pointer, graphHeight);
+
+        window.addEventListener( 'resize', () => showGraph( canvas, canvas_pointer, graphHeight ) );
+    }
+
+    useEffect( loadPocasiAsync, [] );
+
+    return (
+            <article className = { oneGraphStyles.allGraphs } >
+                <canvas ref = { canvasRef } className = { oneGraphStyles.canvas } />
+                <canvas ref = { canvas_pointerRef } className = { oneGraphStyles.canvas_pointer } />
+            </article>
+    )
+}
