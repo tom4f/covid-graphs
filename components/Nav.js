@@ -12,7 +12,13 @@ export default function Nav( ) {
         <nav className={navStyles.nav}>
             <ul>
                 <li>
-                    <Link href='/'>Start</Link>
+                    <Link href='/'>Testy</Link>
+                </li>
+                <li>
+                    <Link href='/hospitalizace'>Hospitalizace</Link>
+                </li>
+                <li>
+                    <Link href='/ockovani-umrti'>Úmrtí</Link>
                 </li>
                 <li>
                     <Link href='https://tomas-blog.vercel.app'>About me</Link>

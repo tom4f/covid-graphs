@@ -2,20 +2,14 @@ export default class Draw {
 
     constructor( canvas, canvas_pointer, graphsConfig ) {
         
-        this.canvas = canvas;
-        this.canvas_pointer = canvas_pointer;
-        
-        this.pdoResp = graphsConfig.data;
-
-        this.common = graphsConfig.common;
-
-        this.date            = this.common.dateField;
-        this.isAllDownloaded = this.common.isAllDownloaded;
-        this.loadPocasi      = this.common.loadDataFunction;
+        this.canvas          = canvas;
+        this.canvas_pointer  = canvas_pointer;
+        this.pdoResp         = graphsConfig.data;
+        this.date            = graphsConfig.common.dateField;
+        this.isAllDownloaded = graphsConfig.common.isAllDownloaded;
+        this.loadPocasi      = graphsConfig.common.loadDataFunction;
 
         this.graphs = graphsConfig.specific;
-
-        console.log( this.graphs )
 
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
@@ -275,7 +269,7 @@ export default class Draw {
         // update variables needed for fresh graph
         this.refresh();
         // show fresh graph
-        this.resizeCanvas();
+        this.graph();
     }
 
 
@@ -396,13 +390,7 @@ export default class Draw {
         this.canvas_pointer.classList.remove('pointerOn');
 
     }
-
-    resizeCanvas() {
-        this.clientWidth  = this.canvas.clientWidth;
-        this.clientHeight = this.canvas.clientHeight;
-        this.graph();
-    }
-    
+   
     axesXY( graphNumber ) {
 
         //line arround graph
@@ -561,20 +549,22 @@ export default class Draw {
         this.ctx.fillStyle = this.color;
         this.ctx.textBaseline = 'middle';
 
-        let yText = ` ${ ( this.min + (this.yLimit) * number / 10 ).toFixed(1) } `;
+        let yValue = ( this.min + (this.yLimit) * number / 10 );
 
         if (this.group === 2 ) {
-            yText = ` ${ ( this.minSecond + (this.yLimitSecond) * number / 10 ).toFixed(1) } `;
+            yValue = ( this.minSecond + (this.yLimitSecond) * number / 10 );
         } 
+
+        let yValueRound = yValue > 100 ? yValue.toFixed(0) : yValue.toFixed(1)
 
         if (graphNumber === 0) {
             this.ctx.textAlign = 'right'
-            this.ctx.fillText( yText, this.graphSpaceLeft, Y );
+            this.ctx.fillText( ` ${yValueRound} `, this.graphSpaceLeft, Y );
         }
 
         if (graphNumber === 1) {
             this.ctx.textAlign = 'left';
-            this.ctx.fillText( yText, this.clientWidth - this.graphSpaceLeft, Y );
+            this.ctx.fillText( ` ${yValueRound} `, this.clientWidth - this.graphSpaceLeft, Y );
         }
     }
 
@@ -589,6 +579,8 @@ export default class Draw {
 
     graph() {
         
+        this.clientWidth  = this.canvas.clientWidth;
+        this.clientHeight = this.canvas.clientHeight;
         // clear canvas
         this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
 

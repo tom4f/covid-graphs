@@ -2,19 +2,17 @@ import React, { useRef, useEffect } from 'react';
 import Draw from './Draw';
 import oneGraphStyles from '../styles/OneGraph.module.scss'
 
-export const OneGraph = ( { graphsConfig } ) => {
+export const OneGraph = ( { graphData } ) => {
 
     const graphHeight        = 300;
     const canvasRef          = useRef( null );
     const canvas_pointerRef  = useRef( null );
 
-    const loadPocasiAsync = async () => {
+    const loadPocasiAsync = () => {
         const canvas         = canvasRef.current;
         const canvas_pointer = canvas_pointerRef.current;
         
-
-
-        const oneDraw = new Draw( canvas, canvas_pointer, graphsConfig ); 
+        const newDraw = new Draw( canvas, canvas_pointer, graphData ); 
 
         const showGraph = ( canvas, canvas_pointer, graphHeight ) => {
             const clientWidth  = document.documentElement.clientWidth;
@@ -23,7 +21,7 @@ export const OneGraph = ( { graphsConfig } ) => {
             canvas.height = graphHeight;
             canvas_pointer.width  = clientWidth;
             canvas_pointer.height = graphHeight;    
-            oneDraw.resizeCanvas(); // resize means show graph :-)
+            newDraw.graph();
         }
 
         showGraph(canvas, canvas_pointer, graphHeight);
@@ -31,7 +29,7 @@ export const OneGraph = ( { graphsConfig } ) => {
         window.addEventListener( 'resize', () => showGraph( canvas, canvas_pointer, graphHeight ) );
     }
 
-    useEffect( loadPocasiAsync, [] );
+    useEffect( loadPocasiAsync, [ graphData ] );
 
     return (
             <article className = { oneGraphStyles.allGraphs } >

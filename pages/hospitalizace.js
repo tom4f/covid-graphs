@@ -1,5 +1,5 @@
 import { OneGraph }     from '../components/OneGraph'
-import { graphsConfig } from './../config/graphsConfig'
+import { graphsConfig } from './../config/graphsConfig_hospitalizace'
 
 export default function Home( { graphsData } ) {
     return (
@@ -28,5 +28,3 @@ export const getStaticProps = async () => {
         revalidate: 10,
     }
 }
-
-// https://www.facebook.com/groups/frontendistiprace/?refid=18
