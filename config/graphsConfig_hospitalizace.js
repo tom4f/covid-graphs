@@ -34,6 +34,26 @@ export const graphsConfig = [
                 group: 1,
                 lineStyle: []
             }
+        ],
+        specific2: [
+            {
+                sourceField: 'hospitalizovani_bez_ockovani_vek_prumer',
+                color: 'fuchsia',
+                style: 'dot',
+                width: 2,
+                header: 'hospitalizovani_bez_ockovani_vek_prumer',
+                group: 1,
+                lineStyle: []
+            },
+            {
+                sourceField: 'hospitalizovani_dokoncene_ockovani_vek_prumer',
+                color: 'aqua',
+                style: 'dot',
+                width: 2,
+                header: 'hospitalizovani_dokoncene_ockovani_vek_prumer',
+                group: 1,
+                lineStyle: []
+            }
         ]
     }
 ]

@@ -4,27 +4,26 @@ export default class Draw {
         
         this.canvas          = canvas;
         this.canvas_pointer  = canvas_pointer;
-        this.pdoResp         = graphsConfig.data;
+        this.dataOrig        = graphsConfig.data;
         this.date            = graphsConfig.common.dateField;
         this.isAllDownloaded = graphsConfig.common.isAllDownloaded;
         this.loadPocasi      = graphsConfig.common.loadDataFunction;
-
-        this.graphs = graphsConfig.specific;
+        this.graphs          = graphsConfig.specific;
 
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
         // date identificator in DB object
 
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx         = this.canvas.getContext('2d');
         this.ctx_pointer = this.canvas_pointer.getContext('2d');
         // array of data object
-        this.dataOrig    = this.pdoResp;
+        //this.dataOrig    = this.pdoResp;
 
         // how many lines to draw
-        this.dataReduced = this.pdoResp;
+        this.dataReduced = this.dataOrig;
 
         this.graphSpaceLeft = 50;
-        this.graphSpaceBtn = 50;
+        this.graphSpaceBtn  = 50;
 
         this.clientWidth  = this.canvas.clientWidth;
         this.clientHeight = this.canvas.clientHeight;
@@ -250,7 +249,7 @@ export default class Draw {
         console.time('Start');
         if (this.isAllDownloaded === false) {
             try { 
-                this.pdoResp = await this.loadPocasi('1999-01-01', '2099-01-01');
+                this.dataOrig = await this.loadPocasi('1999-01-01', '2099-01-01');
                 this.isAllDownloaded = true;
             }
             catch (err) {
@@ -261,7 +260,7 @@ export default class Draw {
         console.timeEnd('Start');
         // 
         if ( this.isAllDownloadedForOneGraph === false) {
-            this.dataOrig = this.pdoResp;
+            //this.dataOrig = this.pdoResp;
             this.isAllDownloadedForOneGraph = true;
         }
         // change start or end date for graph

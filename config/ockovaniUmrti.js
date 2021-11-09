@@ -1,10 +1,10 @@
-export const graphsConfig = [
+export const ockovaniUmrti = [
     {
         common: {
             dateField: 'datum',
             isAllDownloaded: true,
             loadDataFunction: null,
-            url: 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-umrti.json'
+            url: 'https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-umrti.min.json'
         },
         specific: [
             {
@@ -31,6 +31,26 @@ export const graphsConfig = [
                 style: 'area',
                 width: 2,
                 header: 'zemreli_dokoncene_ockovani',
+                group: 1,
+                lineStyle: []
+            }
+        ],
+        specific2: [
+            {
+                sourceField: 'zemreli_bez_ockovani_vek_prumer',
+                color: 'lime',
+                style: 'dot',
+                width: 2,
+                header: 'zemreli_bez_ockovani_vek_prumer',
+                group: 1,
+                lineStyle: []
+            },
+            {
+                sourceField: 'zemreli_dokoncene_ockovani_vek_prumer',
+                color: 'white',
+                style: 'dot',
+                width: 2,
+                header: 'zemreli_dokoncene_ockovani_vek_prumer',
                 group: 1,
                 lineStyle: []
             }

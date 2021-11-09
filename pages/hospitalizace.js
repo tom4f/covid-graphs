@@ -7,6 +7,15 @@ export default function Home( { graphsData } ) {
             { graphsData.map( (graphData, index) =>
                 graphData.data && <OneGraph key={index} graphData={graphData}/>
             )}
+
+            {graphsConfig.map( (graphData, index) =>
+                graphData.specific2 && <OneGraph key={index} graphData={ (
+                    {
+                        ...graphsData[index],
+                        specific: graphData.specific2
+                    }
+                ) }/>)
+            }
         </>
     )
 }
