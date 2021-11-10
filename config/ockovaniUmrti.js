@@ -1,4 +1,4 @@
-export const ockovaniUmrti = [
+export const graphsConfig = [
     {
         common: {
             dateField: 'datum',

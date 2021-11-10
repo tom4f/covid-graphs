@@ -1,14 +1,16 @@
-import { OneGraph }     from '../components/OneGraph'
-import { ockovaniUmrti } from './../config/ockovaniUmrti'
+import { OneGraph }      from '../components/OneGraph'
+import Meta              from './../components/Meta' 
+import { graphsConfig } from './../config/ockovaniUmrti'
 
 export default function Home( { graphsData } ) {
     return (
         <>
+            <Meta title="Covid Death Graphs Czech Republic" description="daily updated number of covid deaths" />
             {graphsData.map( (graphData, index) =>
                 graphData.data && <OneGraph key={index} graphData={graphData}/>
             )}
             
-            {ockovaniUmrti.map( (graphData, index) =>
+            {graphsConfig.map( (graphData, index) =>
                 graphData.specific2 && <OneGraph key={index} graphData={ (
                     {
                         ...graphsData[index],
@@ -22,7 +24,7 @@ export default function Home( { graphsData } ) {
 
 export const getStaticProps = async () => { 
 
-    const urlList = ockovaniUmrti.map( value => value.common.url )
+    const urlList = graphsConfig.map( value => value.common.url )
 
     const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
 
@@ -30,7 +32,7 @@ export const getStaticProps = async () => {
 
     const respAllFulfilled = respAll.map( one => one.status === 'fulfilled' ? one.value.data : false )
 
-    const graphsData = ockovaniUmrti.map( (value, index) => ( { data: respAllFulfilled[index], ...value } ) )
+    const graphsData = graphsConfig.map( (value, index) => ( { data: respAllFulfilled[index], ...value } ) )
 
     return {
         props: { graphsData },

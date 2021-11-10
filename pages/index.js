@@ -1,12 +1,23 @@
-import { OneGraph }     from '../components/OneGraph'
+import { OneGraph }     from './../components/OneGraph'
+import Meta             from './../components/Meta' 
 import { graphsConfig } from './../config/graphsConfig'
 
 export default function Home( { graphsData } ) {
     return (
         <>
+            <Meta title="Covid Test Graphs Czech Republic" description="daily updated covid testing" />
             { graphsData.map( (graphData, index) =>
                 graphData.data && <OneGraph key={index} graphData={graphData}/>
             )}
+
+            {graphsConfig.map( (graphData, index) =>
+                graphData.specific2 && <OneGraph key={index} graphData={ (
+                    {
+                        ...graphsData[index],
+                        specific: graphData.specific2
+                    }
+                ) }/>)
+            }
         </>
     )
 }

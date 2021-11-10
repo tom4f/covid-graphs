@@ -34,10 +34,10 @@ export default class Draw {
         this.reducerStep = 1;
 
 
-        this.canvas_pointer.addEventListener('mousemove', (event)      => this.getInfo(event.offsetX, event.offsetY) );
-        this.canvas_pointer.addEventListener('click', (event) => this.button.click(event) );
+        this.canvas_pointer.addEventListener('mousemove', (event) => this.getInfo(event.offsetX, event.offsetY) );
+        this.canvas_pointer.addEventListener('click',     (event) => this.button.click(event) );
         this.canvas_pointer.addEventListener('mousedown', (event) => this.dynamicInterval(event));
-        this.canvas_pointer.addEventListener('mouseup', () => {
+        this.canvas_pointer.addEventListener('mouseup',   ()      => {
             this.reducerStep = 1;
             clearInterval(this.timer);
         });
@@ -592,8 +592,7 @@ export default class Draw {
             this.lineWidth = width
             this.header = header
             this.group = group
-            this.lineDash = lineStyle
-            
+            this.lineDash = lineStyle   
         }
 
         // show all graphs
@@ -609,7 +608,6 @@ export default class Draw {
             this.ctx.setLineDash(this.lineDash);
             this.ctx.strokeStyle = this.color;
             this.ctx.fillStyle = this.color; 
-            //this.ctx.lineWidth = this.lineWidth;
 
         // minutes step
             let minutesInOneDay = 1;
@@ -621,7 +619,6 @@ export default class Draw {
                 if (widthOfOneValue > 3) {
                     this.ctx.lineWidth = widthOfOneValue - 1
                 } else {
-
                     this.ctx.lineWidth = widthOfOneValue < 1 ? 1 : widthOfOneValue;
                 }
             } else {
@@ -658,22 +655,21 @@ export default class Draw {
                         this.lineWidth,
                         0, 2 * Math.PI
                     )
-
-                 }
+                }
 
                 if ( this.design === 'area' ) {
-                    this.ctx.moveTo( this.xPositionFromDate(oneEntry[this.date]),
-                                    this.clientHeight - this.graphSpaceBtn);
+                    //console.log(this.ctx.lineWidth)
+                    this.ctx.moveTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date]),
+                                     this.clientHeight - this.graphSpaceBtn);
 
-                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
+                    this.ctx.lineTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date]),
+                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
                 }
 
                 if (this.design === 'line') {
                     this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
+                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
                 }
-
             }
 
             this.dataReduced.forEach( oneEntry => line(oneEntry) );
@@ -682,7 +678,6 @@ export default class Draw {
             this.ctx.stroke();
 
         }
-
         // get data from graph
         this.getInfo(this.xForInfo, this.yForInfo);
 

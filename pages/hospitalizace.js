@@ -1,9 +1,11 @@
 import { OneGraph }     from '../components/OneGraph'
+import Meta             from './../components/Meta' 
 import { graphsConfig } from './../config/graphsConfig_hospitalizace'
 
 export default function Home( { graphsData } ) {
     return (
         <>
+            <Meta title="Covid Hospitalization Graphs Czech Republic" description="daily updated covid hospitalization" />
             { graphsData.map( (graphData, index) =>
                 graphData.data && <OneGraph key={index} graphData={graphData}/>
             )}

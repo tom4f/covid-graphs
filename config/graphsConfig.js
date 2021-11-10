@@ -94,7 +94,7 @@ export const graphsConfig = [
             {
                 sourceField: 'pocet_AG_testy',
                 color: 'rgba(255, 0, 0, 0.7)',
-                style: 'area',
+                style: 'line',
                 width: 1,
                 header: 'pocet_AG_testy',
                 group: 1,
