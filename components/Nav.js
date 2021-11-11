@@ -12,7 +12,7 @@ export default function Nav( ) {
         <nav className={navStyles.nav}>
             <ul>
                 <li>
-                    <Link href='/'>Testy</Link>
+                    <Link href='/testy'>Testy</Link>
                 </li>
                 <li>
                     <Link href='/hospitalizace'>Hospitalizace</Link>
