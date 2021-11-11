@@ -21,7 +21,10 @@ export default function Nav( ) {
                     <Link href='/ockovani-umrti'>Úmrtí</Link>
                 </li>
                 <li>
-                    <Link href='https://tomas-blog.vercel.app'>About me</Link>
+                    <Link href='/ockovani-jip'>JIP</Link>
+                </li>
+                <li>
+                    <Link href='https://tomas-blog.vercel.app'>About</Link>
                 </li>
             </ul>
         </nav>

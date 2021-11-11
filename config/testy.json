@@ -79,7 +79,7 @@
             "dateField": "datum",
             "isAllDownloaded": true,
             "loadDataFunction": null,
-            "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/testy-pcr-antigenni.json"
+            "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/testy-pcr-antigenni.min.json"
         },
         "specific": [
             {
