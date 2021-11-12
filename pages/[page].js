@@ -48,11 +48,11 @@ export async function getStaticProps( { params: { page } } ) {
     
     const respAll = await Promise.allSettled( fetchList )
     
-    const respAllFulfilled = respAll.map( one => one.status === 'fulfilled' ? one.value.data : false )
-    const graphsData = graphsConfig.map( (value, index) => ( { data: respAllFulfilled[index], ...value } ) )
+    const respAllFulfilled = respAll.map( one => one.status === 'fulfilled' ? one.value.data : '' )
+    const graphsData = respAllFulfilled.map( (value, index) => ( { data: value, ...graphsConfig[index] } ) )
 
     return {
         props: { graphsData },
-        revalidate: 10,
+        revalidate: 11,
     }
 }
