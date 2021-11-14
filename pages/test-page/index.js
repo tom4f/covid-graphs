@@ -24,8 +24,8 @@ export const getStaticProps = async () => {
     )
     
 
-    const testData = graphsDataSettled[0].value.data
-    const testDataLength = testData.length
+    //const testData = graphsDataSettled[0].value.data
+    //const testDataLength = testData.length
     //console.log( testData[testDataLength - 1] )    
 
     return {
