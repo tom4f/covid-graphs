@@ -2,17 +2,9 @@ import { OneGraph }     from './../components/OneGraph'
 import Meta             from './../components/Meta' 
 import { Fragment } from 'react'
 
-export const OnePage = ( { graphsConfig, graphsDataSettled } ) => {
+export const OnePage = ( { graphsData } ) => {
 
-    const graphsDataFulfilled = graphsDataSettled.map( onePromise =>
-        onePromise.status === 'fulfilled' ? onePromise.value.data : ''
-    )
-    
-    const graphsData = graphsDataFulfilled.map( (data, index) =>
-        ( { data, ...graphsConfig[index] } )
-    )
-    
-    const metaDesc = graphsConfig.map( graph => {
+    const metaDesc = graphsData.map( graph => {
         const specificHeader  = graph.specific.map(  spec => spec.header ).join( ', ' )
         if ( !graph.specific2 ) return specificHeader
         

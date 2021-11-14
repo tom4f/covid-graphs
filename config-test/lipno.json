@@ -1,0 +1,22 @@
+[
+    {
+        "common": {
+            "dateField": "datum",
+            "isAllDownloaded": true,
+            "loadDataFunction": null,
+            "url": "https://www.frymburk.com/rekreace/api/pdo_read_pocasi.php",
+            "title": "Lipno"
+        },
+        "specific": [
+            {
+                "sourceField": "voda",
+                "color": "red",
+                "style": "line",
+                "width": 2,
+                "header": "voda",
+                "group": 1,
+                "lineStyle": []
+            }
+        ]
+    }
+]
