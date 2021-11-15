@@ -1,25 +1,11 @@
 import fs from 'fs'
 import path from 'path'
-import { OnePage } from './../components/OnePage'
+import { OnePage } from '../../components/OnePage'
 
 export default function Home( { graphsData } ) {
     return (
         <OnePage graphsData={graphsData} />
     )
-}
-
-export const getStaticPaths = async () => {
-    const graphConfigFiles = fs.readdirSync( path.join( 'config' ) )
-    const paths = graphConfigFiles.map( filename => ({
-      params: {
-        page: filename.replace( '.json', '' )
-      }
-    }))
-    
-    return {
-        paths,
-        fallback: false,
-    }
 }
 
 export const getStaticProps = async ( { params: { page } } ) => {
@@ -43,9 +29,21 @@ export const getStaticProps = async ( { params: { page } } ) => {
     //console.log( testData[testDataLength - 1] )    
 
     return {
-        props: {
-            graphsData
-        },
-        revalidate: 30,
+        props: { graphsData },
+        revalidate: 30
+    }
+}
+
+export const getStaticPaths = async () => {
+    const graphConfigFiles = fs.readdirSync( path.join( 'config' ) )
+    const paths = graphConfigFiles.map( filename => ({
+      params: {
+        page: filename.replace( '.json', '' )
+      }
+    }))
+    
+    return {
+        paths,
+        fallback: false,
     }
 }
