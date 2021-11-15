@@ -46,6 +46,6 @@ export const getStaticProps = async ( { params: { page } } ) => {
         props: {
             graphsData
         },
-        revalidate: 15,
+        revalidate: 30,
     }
 }
