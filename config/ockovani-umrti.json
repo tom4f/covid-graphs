@@ -5,7 +5,8 @@
             "isAllDownloaded": true,
             "loadDataFunction": null,
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-umrti.min.json",
-            "title": "Covid Deaths Graphs Czech Republic"
+            "title": "Covid Deaths Graphs Czech Republic",
+            "navName" : "úmrtí"
         },
         "specific": [
             {

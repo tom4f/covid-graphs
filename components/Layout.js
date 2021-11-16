@@ -3,12 +3,12 @@ import Nav from './Nav'
 import Footer from './Footer'
 import React from 'react'
 
-const Layout = ({ children }) => {
+const Layout = ({ children, allPaths }) => {
   
     return (
         <div>
             <Meta />
-            <Nav />
+            <Nav allPaths={allPaths} />
             { children }
             <Footer />
         </div>

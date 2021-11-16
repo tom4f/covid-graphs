@@ -5,7 +5,8 @@
             "isAllDownloaded": true,
             "loadDataFunction": null,
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-hospitalizace.min.json",
-            "title": "Covid Hospitalization Graphs Czech Republic"
+            "title": "Covid Hospitalization Graphs Czech Republic",
+            "navName" : "hospitalizace"
         },
         "specific": [
             {

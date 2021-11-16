@@ -9,6 +9,7 @@ export default function Home( { graphsData } ) {
 }
 
 export const getStaticProps = async ( { params: { page } } ) => {
+    const files = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', page + '.json' ), 'utf-8' )     
     const graphsConfig = JSON.parse( graphsConfigJson )
     const urlList = graphsConfig.map( graphConfig => graphConfig.common.url )
@@ -23,13 +24,26 @@ export const getStaticProps = async ( { params: { page } } ) => {
         ( { data, ...graphsConfig[index] } )
     )
     
+    const allPaths = files.map( filename => {
+        const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', filename ), 'utf-8' )     
+        const graphsConfig =  JSON.parse( graphsConfigJson )
 
-    //const testData = graphsDataSettled[0].value.data
-    //const testDataLength = testData.length
-    //console.log( testData[testDataLength - 1] )    
+        const onePath      = filename.replace( '.json', '' )
+        const navName      = graphsConfig[0].common.navName
+        const isActivePath = onePath === page ? true : false
+
+        return ({
+            onePath,
+            navName,
+            isActivePath
+        })
+    })
 
     return {
-        props: { graphsData },
+        props: {
+            graphsData,
+            allPaths
+        },
         revalidate: 30
     }
 }

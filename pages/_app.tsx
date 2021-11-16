@@ -3,8 +3,13 @@ import './css/main.css';
 import Layout from '../components/Layout'
 
 function MyApp( { Component, pageProps }: AppProps) {
+
+  const navName = pageProps.graphsData[0].common.navName
+
+  console.log( navName )
+
   return(
-    <Layout>
+    <Layout allPaths={ pageProps.allPaths } >
       <Component {...pageProps} />
     </Layout>
   )

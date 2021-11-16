@@ -5,7 +5,8 @@
             "isAllDownloaded": true,
             "loadDataFunction": null,
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-pozitivni65.min.json",
-            "title": "Covid Tests Graphs Czech Republic"
+            "title": "Covid Tests Graphs Czech Republic",
+            "navName" : "testy"
         },
         "specific": [
             {
@@ -87,7 +88,7 @@
                 "sourceField": "pocet_PCR_testy",
                 "color": "lime",
                 "style": "area",
-                "width": 2,
+                "width": 1,
                 "header": "pocet_PCR_testy",
                 "group": 1,
                 "lineStyle": []

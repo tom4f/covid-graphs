@@ -7,7 +7,7 @@
 
     & > * {
         margin: 0;
-        height: 65px;
+        height: 60px;
         padding: 5px;
     }
 }
@@ -22,7 +22,6 @@
     }
 }
 
-
 .nav {
   ul {
       height: 100%;
@@ -32,6 +31,15 @@
       align-items: center;
       flex-wrap: wrap;
       
+      li {
+        text-transform: capitalize;
+        padding-top: 5px;
+        border-top: 2px solid transparent;
+        &:hover {
+          border-top: 2px solid red;
+        }
+      }
+
       li a {
         margin: 5px 15px;
         color:grey;
