@@ -9,7 +9,7 @@ export default function Home( { graphsData } ) {
 }
 
 export const getStaticProps = async ( { params: { page } } ) => {
-    const graphsConfigJson = fs.readFileSync( path.join( 'config', page + '.json' ), 'utf-8' )     
+    const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', page + '.json' ), 'utf-8' )     
     const graphsConfig = JSON.parse( graphsConfigJson )
     const urlList = graphsConfig.map( graphConfig => graphConfig.common.url )
     const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
@@ -35,7 +35,7 @@ export const getStaticProps = async ( { params: { page } } ) => {
 }
 
 export const getStaticPaths = async () => {
-    const graphConfigFiles = fs.readdirSync( path.join( 'config' ) )
+    const graphConfigFiles = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const paths = graphConfigFiles.map( filename => ({
       params: {
         page: filename.replace( '.json', '' )

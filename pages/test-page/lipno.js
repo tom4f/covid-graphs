@@ -9,7 +9,7 @@ export default function Home( { graphsData } ) {
 }
 
 export const getStaticProps = async () => {
-    const graphsConfigJson = fs.readFileSync( path.join( 'config-test', 'lipno.json' ), 'utf-8' )     
+    const graphsConfigJson = fs.readFileSync( path.join( process.cwd(), 'config-test', 'lipno.json' ), 'utf-8' )     
     const graphsConfig = JSON.parse( graphsConfigJson )
     const urlList = graphsConfig.map( graphConfig => graphConfig.common.url )
     const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
