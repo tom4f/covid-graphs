@@ -1,12 +1,25 @@
 import Link from 'next/link'
+import styled, { css } from 'styled-components'
 import navStyles from '../styles/Nav.module.scss'
-import { useState } from 'react'
+
+
+const StyledLi = styled.li`
+
+    ${ ({isActivePath}) => isActivePath && css`
+        & {
+            border-top: 2px solid red;
+        }
+    `}
+
+    &:hover {
+        border-top: 2px solid rgba(255, 0, 0, 0.3);
+    }
+
+`
 
 export default function Nav( { allPaths } ) {
 
-    const activeStyle = (pathData) => ({
-        borderTopColor: `${pathData.isActivePath ? 'red' : 'transparent'}`
-    })
+
 
     return (
         <header className={navStyles.nav_container} >
@@ -18,15 +31,13 @@ export default function Nav( { allPaths } ) {
             <nav className={navStyles.nav}>
                 <ul>
                     {
-                        allPaths.map( (pathData, index) => (
-                            <li key={index}
-                                style={ activeStyle(pathData) }
-                            >
+                        allPaths && allPaths.map( (pathData, index) => (
+                            <StyledLi key={index} isActivePath={pathData.isActivePath}  >
                                 <Link href={ `/${pathData.onePath}` }>{ pathData.navName }</Link>
-                            </li>
+                            </StyledLi>
                         ))
                     }
-                    <li>
+                    <li className={navStyles.aboutLi}> 
                         <Link href='https://tomas-blog.vercel.app'>About</Link>
                     </li>
                 </ul>

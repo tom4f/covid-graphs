@@ -123,8 +123,8 @@ export default class Draw {
     // button method
     get button(){
 
-        const btnWidth  = 30;
-        const btnHeight = 25;
+        const btnWidth  = 35;
+        const btnHeight = 35;
         // X position of button
         const btnX = {
             startPrev : 0,
@@ -142,9 +142,9 @@ export default class Draw {
             // show text
             this.ctx.font = '30px Arial';
             this.ctx.fillStyle = 'white';
-            this.ctx.textBaseline = 'hanging';
+            this.ctx.textBaseline = 'middle';
             this.ctx.textAlign = 'center';
-            this.ctx.fillText(char, posX + btnWidth / 2, 0);
+            this.ctx.fillText(char, posX + btnWidth / 2, btnHeight / 2);
         }
         // show all buttons
         const show = () => {

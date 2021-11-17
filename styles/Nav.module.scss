@@ -34,10 +34,6 @@
       li {
         text-transform: capitalize;
         padding-top: 5px;
-        border-top: 2px solid transparent;
-        &:hover {
-          border-top: 2px solid red;
-        }
       }
 
       li a {
@@ -52,4 +48,10 @@
   
       }
     }   
+}
+
+.aboutLi{
+  &:hover {
+    border-top: 2px solid rgba(255, 0, 0, 0.3);
+  }
 }

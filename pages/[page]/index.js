@@ -12,6 +12,7 @@ export const getStaticProps = async ( { params: { page } } ) => {
     const files = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', page + '.json' ), 'utf-8' )     
     const graphsConfig = JSON.parse( graphsConfigJson )
+
     const urlList = graphsConfig.map( graphConfig => graphConfig.common.url )
     const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
     const graphsDataSettled = await Promise.allSettled( fetchList )
@@ -23,7 +24,7 @@ export const getStaticProps = async ( { params: { page } } ) => {
     const graphsData = graphsDataFulfilled.map( (data, index) =>
         ( { data, ...graphsConfig[index] } )
     )
-    
+
     const allPaths = files.map( filename => {
         const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', filename ), 'utf-8' )     
         const graphsConfig =  JSON.parse( graphsConfigJson )
@@ -49,13 +50,12 @@ export const getStaticProps = async ( { params: { page } } ) => {
 }
 
 export const getStaticPaths = async () => {
-    const graphConfigFiles = fs.readdirSync( path.join( process.cwd(), 'config' ) )
+    const graphConfigFiles = fs.readdirSync( path.join( process.cwd(), 'config' ) )   
     const paths = graphConfigFiles.map( filename => ({
       params: {
         page: filename.replace( '.json', '' )
       }
     }))
-    
     return {
         paths,
         fallback: false,
