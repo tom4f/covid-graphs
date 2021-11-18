@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import Draw from './Draw';
 import oneGraphStyles from '../styles/OneGraph.module.scss'
+import { OneGraphType, showGraphType } from './TypeDefinition';
 
-export const OneGraph = ( { graphData } ) => {
+export const OneGraph = ( { graphData }: OneGraphType ) => {
 
     const graphHeight        = 300;
     const canvasRef          = useRef( null );
@@ -14,7 +15,7 @@ export const OneGraph = ( { graphData } ) => {
         
         const newDraw = new Draw( canvas, canvas_pointer, graphData ); 
 
-        const showGraph = ( canvas, canvas_pointer, graphHeight ) => {
+        const showGraph: showGraphType = ( canvas, canvas_pointer, graphHeight ) => {
             const clientWidth  = document.documentElement.clientWidth;
             //const clientHeight = document.documentElement.clientHeight;
             canvas.width  = clientWidth;
