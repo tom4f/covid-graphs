@@ -6,8 +6,8 @@ import { OneGraphType, showGraphType } from './TypeDefinition';
 export const OneGraph = ( { graphData }: OneGraphType ) => {
 
     const graphHeight        = 300;
-    const canvasRef          = useRef( null );
-    const canvas_pointerRef  = useRef( null );
+    const canvasRef          = useRef<HTMLCanvasElement | null>( null );
+    const canvas_pointerRef  = useRef<HTMLCanvasElement | null>( null );
 
     const loadPocasiAsync = () => {
         const canvas         = canvasRef.current;
@@ -25,9 +25,11 @@ export const OneGraph = ( { graphData }: OneGraphType ) => {
             newDraw.graph();
         }
 
-        showGraph(canvas, canvas_pointer, graphHeight);
+        canvas && canvas_pointer && showGraph(canvas, canvas_pointer, graphHeight)
 
-        window.addEventListener( 'resize', () => showGraph( canvas, canvas_pointer, graphHeight ) );
+        window.addEventListener( 'resize', () =>
+            canvas && canvas_pointer && showGraph( canvas, canvas_pointer, graphHeight )
+        )
     }
 
     useEffect( loadPocasiAsync, [ graphData ] );

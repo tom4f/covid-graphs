@@ -1,20 +1,27 @@
 import fs from 'fs'
 import path from 'path'
 import { OnePage } from '../../components/OnePage'
+import { graphsDataType, graphConfigType, IParams } from '../../components/TypeDefinition'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
-export default function Home( { graphsData } ) {
+export default function Home( { graphsData }: graphsDataType ) {
     return (
         <OnePage graphsData={graphsData} />
     )
 }
 
-export const getStaticProps = async ( { params: { page } } ) => {
+export const getStaticProps: GetStaticProps = async ( { params } ) => {
+
+    const { page } = params as IParams 
+
     const files = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', page + '.json' ), 'utf-8' )     
-    const graphsConfig = JSON.parse( graphsConfigJson )
+    const graphsConfig: graphConfigType[] = JSON.parse( graphsConfigJson )
 
     const urlList = graphsConfig.map( graphConfig => graphConfig.common.url )
     const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
+
+    
     const graphsDataSettled = await Promise.allSettled( fetchList )
 
     const graphsDataFulfilled = graphsDataSettled.map( onePromise =>
@@ -49,7 +56,7 @@ export const getStaticProps = async ( { params: { page } } ) => {
     }
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
     const graphConfigFiles = fs.readdirSync( path.join( process.cwd(), 'config' ) )   
     const paths = graphConfigFiles.map( filename => ({
       params: {

@@ -1,5 +1,5 @@
-import { OneGraph }     from './../components/OneGraph'
-import Meta             from './../components/Meta' 
+import { OneGraph } from './../components/OneGraph'
+import { Meta }     from './../components/Meta' 
 import { Fragment } from 'react'
 import { graphsDataType, specificType } from './TypeDefinition'
 
@@ -15,7 +15,7 @@ export const OnePage = ( { graphsData }: graphsDataType ) => {
 
     return (
         <>
-            <Meta title={ graphsData[0].common.title } description={ metaDesc.join( ', ' ) } />
+            <Meta title={ graphsData[0].common.title } keywords={ metaDesc.join( ', ' ) } />
             {
                 graphsData.map( (graphData, index) => graphData.data && (
                         <Fragment key={index}>

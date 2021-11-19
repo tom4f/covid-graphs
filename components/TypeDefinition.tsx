@@ -2,26 +2,19 @@ export type BigStyledLi = {
     isActivePath: boolean;
 }
 
-type AllPaths = {
+type onePathType = {
     onePath: string;
     navName: string;
     isActivePath: boolean;
 }
 
 export type NavType = {
-    allPaths: AllPaths[];
+    allPaths: onePathType[];
 }
 
-export type graphData = {
-    [key in 'common' | 'specific' | 'specific2' | 'data']: any
-}
-
-export type OneGraphType = {
-    graphData: graphData;
-}
-
-export type graphsDataType = {
-    graphsData: graphData[];
+export type LayoutType = {
+    children: JSX.Element;
+    allPaths: onePathType[];
 }
 
 export type specificType = {
@@ -34,4 +27,53 @@ export type specificType = {
     lineStyle: [];
 }
 
-export type showGraphType = ( canvas: any, canvas_pointer: any, graphHeight: number ) => void
+export type commonType = {
+    dateField: string
+    isAllDownloaded: boolean;
+    loadDataFunction: any;
+    url: string;
+    title: string;
+    navName : string;  
+}
+
+export type graphConfigType = {
+    'common': commonType;
+    'specific': specificType[] ;
+    'specific2'?: specificType[] ;
+}
+
+export type graphData = {
+    [key in 'common' | 'specific' | 'specific2' | 'data']: any
+}
+
+export type allSettledType = {
+    [key in 'status' | 'value' | 'reason']: any
+}
+
+export type OneGraphType = {
+    graphData: graphData;
+}
+
+export type graphsDataType = {
+    graphsData: graphData[];
+}
+
+
+export type showGraphType = (
+    canvas: HTMLCanvasElement,
+    canvas_pointer: HTMLCanvasElement,
+    graphHeight: number
+) => void
+
+
+import { ParsedUrlQuery } from 'querystring'
+
+export interface IParams extends ParsedUrlQuery {
+    page: string
+}
+
+export type MetaType = {
+    title?: string;
+    keywords?: string;
+    description?: string;
+}
