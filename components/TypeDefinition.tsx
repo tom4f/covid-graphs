@@ -37,13 +37,20 @@ export type commonType = {
 }
 
 export type graphConfigType = {
-    'common': commonType;
-    'specific': specificType[] ;
-    'specific2'?: specificType[] ;
+    common: commonType;
+    specific: specificType[] ;
+    specific2?: specificType[] ;
+}
+
+export type pureData = {
+    [key: string]: number;
 }
 
 export type graphData = {
-    [key in 'common' | 'specific' | 'specific2' | 'data']: any
+    common: commonType;
+    specific: any;
+    specific2: any;
+    data: pureData[];
 }
 
 export type allSettledType = {

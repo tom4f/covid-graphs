@@ -1,32 +1,72 @@
+import { graphData, pureData, specificType } from "./TypeDefinition";
+
 export default class Draw {
 
-    constructor( canvas, canvas_pointer, graphsConfig ) {
+    dataOrig       : pureData[]
+    dataReduced    : pureData[]
+    date           : string
+    isAllDownloaded: boolean
+    loadPocasi     : () => Promise<string>
+    graphs         : specificType[]
+    isAllDownloadedForOneGraph: boolean
+    private ctx        : CanvasRenderingContext2D
+    private ctx_pointer: CanvasRenderingContext2D
+    graphSpaceLeft  : number
+    graphSpaceBtn   : number
+    clientWidth     : number
+    clientHeight    : number
+    timer           : number
+    delay           : number
+    reducerStep     : number
+    xForInfo        : number
+    yForInfo        : number
+    refresh         : () => void
+    
+    max = 0
+    min = 0
+    yLimit = 0
+    maxSecond = 0
+    minSecond = 0
+    yLimitSecond = 0
+
+    start = 0
+    end   = 0
+    xLimit = 0
+
+    constructor(
+        //private canvas: HTMLCanvasElement | null,
+        public canvas        : HTMLCanvasElement,
+        public canvas_pointer: HTMLCanvasElement,
+        private graphData     : graphData
+    ) {
         
         this.canvas          = canvas;
         this.canvas_pointer  = canvas_pointer;
-        this.dataOrig        = graphsConfig.data;
-        this.date            = graphsConfig.common.dateField;
-        this.isAllDownloaded = graphsConfig.common.isAllDownloaded;
-        this.loadPocasi      = graphsConfig.common.loadDataFunction;
-        this.graphs          = graphsConfig.specific;
+        this.dataOrig        = graphData.data;
+        this.date            = graphData.common.dateField;
+        this.isAllDownloaded = graphData.common.isAllDownloaded;
+        this.loadPocasi      = graphData.common.loadDataFunction;
+        this.graphs          = graphData.specific;
+        
 
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
         // date identificator in DB object
 
-        this.ctx         = this.canvas.getContext('2d');
-        this.ctx_pointer = this.canvas_pointer.getContext('2d');
+        this.ctx         = canvas.getContext('2d')!;
+        this.ctx_pointer = canvas_pointer.getContext('2d')!;
         // array of data object
         //this.dataOrig    = this.pdoResp;
 
         // how many lines to draw
         this.dataReduced = this.dataOrig;
 
+
         this.graphSpaceLeft = 50;
         this.graphSpaceBtn  = 50;
 
-        this.clientWidth  = this.canvas.clientWidth;
-        this.clientHeight = this.canvas.clientHeight;
+        this.clientWidth  = canvas.clientWidth;
+        this.clientHeight = canvas.clientHeight;
 
         this.timer = 0;
         this.delay = 100;
@@ -34,16 +74,16 @@ export default class Draw {
         this.reducerStep = 1;
 
 
-        this.canvas_pointer.addEventListener('mousemove', (event) => this.getInfo(event.offsetX, event.offsetY) );
-        this.canvas_pointer.addEventListener('click',     (event) => this.button.click(event) );
-        this.canvas_pointer.addEventListener('mousedown', (event) => this.dynamicInterval(event));
-        this.canvas_pointer.addEventListener('mouseup',   ()      => {
+        canvas_pointer.addEventListener('mousemove', (event) => this.getInfo(event.offsetX, event.offsetY) );
+        canvas_pointer.addEventListener('click',     (event) => this.button.click(event) );
+        canvas_pointer.addEventListener('mousedown', (event) => this.dynamicInterval(event));
+        canvas_pointer.addEventListener('mouseup',   ()      => {
             this.reducerStep = 1;
             clearInterval(this.timer);
         });
         // for touch devicess (tablet)
-        this.canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event), { passive: false } );
-        this.canvas_pointer.addEventListener('touchend', () => {
+        canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event), { passive: false } );
+        canvas_pointer.addEventListener('touchend', () => {
             this.reducerStep = 1;
             clearInterval(this.timer);
         });
@@ -59,43 +99,35 @@ export default class Draw {
             this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date];
             this.xLimit = this.lastDayNumber() - this.firstDayNumber();
 
-            const graphArray = ( operation, group) => {
-                const myArray = [];
-                const myArraySecond = [];
+            const graphArray = ( selectGroup: number) => {
+                const myArray       : number[] = [];
 
                 this.dataReduced.forEach( value => {
-                    for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
-                        const type = this.graphs[graphNumber].sourceField;
-                        if(this.graphs[graphNumber].group === 1){
-                            if ( isNaN(value[type]) ) {
-                                return null
-                            } else {
-                                 myArray.push( value[type] )
-                            }
-                        }
 
-                        if(this.graphs[graphNumber].group === 2){
-                            if ( isNaN(value[type]) ) {
+                    for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
+                        const source = this.graphs[graphNumber].sourceField;
+                        
+                        if(this.graphs[graphNumber].group === selectGroup){
+                            if ( isNaN(value[source]) ) {
                                 return null
                             } else {
-                                 myArraySecond.push( value[type] )
+                                 myArray.push( value[source] )
                             }
                         }
                     }
+
                   } );
-
-                 const bothGroups = [ Math[operation](...myArray), Math[operation](...myArraySecond)];
-
-                 return bothGroups[group];
+                  
+                 return myArray
             }
 
             // for multiple graph - different Y
-            this.max = graphArray('max', 0);
-            this.min = graphArray('min', 0);
+            this.max = Math.max( ...graphArray( 1 ) );
+            this.min = Math.min( ...graphArray( 1 ) );
             this.yLimit = this.max - this.min;
 
-            this.maxSecond = graphArray('max', 1);
-            this.minSecond = graphArray('min', 1);
+            this.maxSecond = Math.max( ...graphArray( 2 ) );
+            this.minSecond = Math.min( ...graphArray( 2 ) );
             this.yLimitSecond = this.maxSecond - this.minSecond;
 
         }
@@ -103,7 +135,7 @@ export default class Draw {
         this.refresh();
     }
 
-    dynamicInterval(event) {
+    private dynamicInterval = (event) => {
 
         const resetInterval = () => {
             if ( this.reducerStep < 730 ) {
@@ -576,14 +608,14 @@ export default class Draw {
         return this.graphSpaceBtn + (max - value)         * (this.clientHeight - 2 * this.graphSpaceBtn ) / (max - min)
     }
 
-    graph() {
+    graph = () => {
         
         this.clientWidth  = this.canvas.clientWidth;
         this.clientHeight = this.canvas.clientHeight;
         // clear canvas
         this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
 
-        this.graphSelect = (graphNumber) =>{
+        this.graphSelect = (graphNumber) => {
             
             const { sourceField, color, style, width, header, group, lineStyle } = this.graphs[graphNumber];
             this.type = sourceField
