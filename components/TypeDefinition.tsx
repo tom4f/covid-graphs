@@ -43,7 +43,7 @@ export type graphConfigType = {
 }
 
 export type pureData = {
-    [key: string]: number;
+    [key: string]:  number | string;
 }
 
 export type graphData = {

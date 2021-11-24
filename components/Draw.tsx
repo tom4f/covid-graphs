@@ -6,7 +6,7 @@ export default class Draw {
     dataReduced    : pureData[]
     date           : string
     isAllDownloaded: boolean
-    loadPocasi     : () => Promise<string>
+    loadPocasi     : (startDate: string, stopDate: string) => Promise<pureData[]>
     graphs         : specificType[]
     isAllDownloadedForOneGraph: boolean
     private ctx        : CanvasRenderingContext2D
@@ -15,13 +15,25 @@ export default class Draw {
     graphSpaceBtn   : number
     clientWidth     : number
     clientHeight    : number
-    timer           : number
-    delay           : number
+    timer = setInterval( () => null, 10000 )
+    delay = 200
     reducerStep     : number
     xForInfo        : number
     yForInfo        : number
     refresh         : () => void
-    
+
+    color = 'white'
+    header = ''
+    group = 1
+    type = ''
+    style = 'line'
+    lineStyle: number[] = []
+
+    lineWidth = 1
+    graphSelect = (graphNumber: number) => {
+
+    }
+   
     max = 0
     min = 0
     yLimit = 0
@@ -29,8 +41,8 @@ export default class Draw {
     minSecond = 0
     yLimitSecond = 0
 
-    start = 0
-    end   = 0
+    start = '01-01-2000'
+    end   = '31-12-3000'
     xLimit = 0
 
     constructor(
@@ -48,7 +60,6 @@ export default class Draw {
         this.loadPocasi      = graphData.common.loadDataFunction;
         this.graphs          = graphData.specific;
         
-
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
         // date identificator in DB object
@@ -68,8 +79,6 @@ export default class Draw {
         this.clientWidth  = canvas.clientWidth;
         this.clientHeight = canvas.clientHeight;
 
-        this.timer = 0;
-        this.delay = 100;
         // 1 month default step
         this.reducerStep = 1;
 
@@ -95,23 +104,23 @@ export default class Draw {
         // also for refresh:
         this.refresh = () => {
        
-            this.start = this.dataReduced[0][this.date];
-            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date];
+            this.start = this.dataReduced[0][this.date] as string;
+            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date] as string;
             this.xLimit = this.lastDayNumber() - this.firstDayNumber();
 
             const graphArray = ( selectGroup: number) => {
-                const myArray       : number[] = [];
+                const myArray: number[] = [];
 
-                this.dataReduced.forEach( value => {
+                this.dataReduced.forEach( pureData => {
 
                     for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
                         const source = this.graphs[graphNumber].sourceField;
                         
                         if(this.graphs[graphNumber].group === selectGroup){
-                            if ( isNaN(value[source]) ) {
+                            if ( isNaN( pureData[source] as number ) ) {
                                 return null
                             } else {
-                                 myArray.push( value[source] )
+                                 myArray.push( pureData[source] as number )
                             }
                         }
                     }
@@ -135,7 +144,8 @@ export default class Draw {
         this.refresh();
     }
 
-    private dynamicInterval = (event) => {
+
+    private dynamicInterval = (event: MouseEvent | TouchEvent) => {
 
         const resetInterval = () => {
             if ( this.reducerStep < 730 ) {
@@ -165,7 +175,7 @@ export default class Draw {
             endNext   : this.clientWidth - btnWidth
         };
         // create button
-        const dispBtn = (posX, char, opacity) => {
+        const dispBtn = (posX: number, char: string, opacity: number) => {
             // show background
             this.ctx.beginPath(); 
             this.ctx.fillStyle = `rgba(255, 0, 0, ${opacity})`; 
@@ -187,7 +197,7 @@ export default class Draw {
         }
 
 
-        const isXinButton = (x) => {
+        const isXinButton = (x: number) => {
             return {
                 startPrev : x >= btnX.startPrev && x <= btnX.startPrev + btnWidth,
                 startNext : x >= btnX.startNext && x <= btnX.startNext + btnWidth,
@@ -197,9 +207,12 @@ export default class Draw {
         }
 
         // click on button detection
-        const click = (event) => {
-            const x = event.offsetX || event.layerX;
-            const y = event.offsetY || event.layerY;
+        const click = (event: MouseEvent | TouchEvent) => {
+
+            const evenRetyped: any = event
+
+            const x = evenRetyped.offsetX || evenRetyped.layerX;
+            const y = evenRetyped.offsetY || evenRetyped.layerY;
             if (y >= 0  && y <= btnHeight ) {
                 const { startPrev, startNext, endPrev, endNext } = isXinButton(x);
                 // decrease month
@@ -211,7 +224,7 @@ export default class Draw {
             }
         }
         // handle mousemove event over button
-        const hover = ( x, y ) => {
+        const hover = ( x: number, y: number ) => {
             // if mouseover is inside button
             if (y >= 0  && y <= btnHeight ) {
 
@@ -250,19 +263,17 @@ export default class Draw {
         }
     }
 
-
-    getTextDateFromNewDate(updDate){
+    getTextDateFromNewDate(updDate: Date){
         //return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
         // return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }T${ ('0' + updDate.getHours()).slice(-2) }:${ ('0' + updDate.getMinutes()).slice(-2) }Z`;
         //return `${updDate.toISOString().slice(0, 16)}:00.000Z`;
         return `${updDate.toISOString().slice(0, 16)}:00.000Z`;
     }
 
-
-    dataReducer(startOrEnd, move) {
-        const dateBeforeModification = new Date( this[startOrEnd] );
+    dataReducer(startOrEnd: string, move: number) {
+        const dateBeforeModification = new Date( startOrEnd === 'start' ? this.start : this.end );
         // change start or end date by +1 year or -1 year
-        const updatedDate  = new Date( dateBeforeModification.setDate( dateBeforeModification.getDate() + move )  );
+        const updatedDate  = new Date( dateBeforeModification.setDate( dateBeforeModification.getDate() + move )  ); 
         // get new filtered data array
         const dataReduced = this.dataOrig.filter( (value) => {
             const oneDate = new Date( value[this.date] );
@@ -276,9 +287,8 @@ export default class Draw {
     }
     
     // download all
-    async updateGraph(startOrEnd, move) {
+    async updateGraph(startOrEnd: string, move: number) {
         // promis AJAX query
-        console.time('Start');
         if (this.isAllDownloaded === false) {
             try { 
                 this.dataOrig = await this.loadPocasi('1999-01-01', '2099-01-01');
@@ -289,7 +299,6 @@ export default class Draw {
                 return null;
             }
         }
-        console.timeEnd('Start');
         // 
         if ( this.isAllDownloadedForOneGraph === false) {
             //this.dataOrig = this.pdoResp;
@@ -304,7 +313,7 @@ export default class Draw {
     }
 
 
-    getInfo(xPos, yPos){
+    getInfo(xPos: number, yPos: number){
 
         // get coordinates inside canvas
         // const x = event.offsetX;
@@ -332,7 +341,7 @@ export default class Draw {
             const shortDate = this.getTextDateFromNewDate( new Date(dayNumberInMs) );
             const dayText = () => {
                     // different x text for day and year graph
-                    if ( this.dataReduced[0][this.date].length === 10){
+                    if ( ( this.dataReduced[0][this.date] as string ).length === 10){
                         return shortDate.slice(0,10)
                     } else {
                         const [, month, day] = shortDate.slice(0,10).split('-')
@@ -341,7 +350,8 @@ export default class Draw {
               }
 
                // search entry with datum
-            const valueY = (this.dataReduced).find( value => ( value[this.date] === shortDate || value[this.date] === shortDate.split('T')[0] ) );
+            const valueY = (this.dataReduced).find( value =>
+                [ shortDate, shortDate.split('T')[0] ].includes( value[this.date] as string ));
 
             const showInfo = () => {
 
@@ -361,7 +371,7 @@ export default class Draw {
                 this.ctx_pointer.textAlign = 'center';
                 this.ctx_pointer.fillText( dayText(), xPos, this.graphSpaceBtn - 8 );
 
-                const infoLeftY = ( type, yValue ) => {
+                const infoLeftY = ( type: string, yValue: number ) => {
                     this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
                     // show line for y
                     this.ctx_pointer.beginPath(); 
@@ -375,9 +385,9 @@ export default class Draw {
                     this.ctx_pointer.fillStyle = 'white';
                     this.ctx_pointer.textBaseline = 'middle';
                     this.ctx_pointer.textAlign = 'right';
-                    this.ctx_pointer.fillText(` ${ valueY[type] }`, this.graphSpaceLeft, yValue );
+                    this.ctx_pointer.fillText(` ${ valueY && valueY[type] }`, this.graphSpaceLeft, yValue );
                 }
-                const infoRightY = ( type, yValue ) => {
+                const infoRightY = ( type: string, yValue: number ) => {
                     this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
                     // show line for y second
                     this.ctx_pointer.beginPath(); 
@@ -391,21 +401,21 @@ export default class Draw {
                     this.ctx_pointer.fillStyle = 'white';
                     this.ctx_pointer.textBaseline = 'middle';
                     this.ctx_pointer.textAlign = 'left';
-                    this.ctx_pointer.fillText(` ${ valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
+                    this.ctx_pointer.fillText(` ${ valueY && valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
                 }
                 // calculate y for graph 
                 const firstInfoType  = this.graphs[0].sourceField;
-                const y = this.yPositionFromDate(valueY[firstInfoType], this.min, this.max);
+                const y = this.yPositionFromDate( valueY ? valueY[firstInfoType] as number : 0, this.min, this.max);
                 infoLeftY( firstInfoType, y );
 
                 if (this.graphs.length === 1) return null;
 
                 // 2nd graph in canvas
-                let ySecond;
+                let ySecond = 0;
                 const secondInfoType = this.graphs[1].sourceField;
                 const secondGroup = this.graphs[1].group
-                if (secondGroup === 1) ySecond = this.yPositionFromDate(valueY[secondInfoType], this.min, this.max);
-                if (secondGroup === 2) ySecond = this.yPositionFromDate(valueY[secondInfoType], this.minSecond, this.maxSecond);
+                if (secondGroup === 1) ySecond = this.yPositionFromDate( valueY ? valueY[secondInfoType] as number : 0, this.min, this.max);
+                if (secondGroup === 2) ySecond = this.yPositionFromDate( valueY ? valueY[secondInfoType] as number : 0, this.minSecond, this.maxSecond);
                 infoRightY(secondInfoType, ySecond);
             }
 
@@ -422,7 +432,7 @@ export default class Draw {
 
     }
    
-    axesXY( graphNumber ) {
+    axesXY( graphNumber: number ) {
 
         //line arround graph
         this.ctx.beginPath();
@@ -470,38 +480,45 @@ export default class Draw {
         this.ctx.lineWidth = 2;
         this.ctx.setLineDash( [1, 0] );
 
-        let firstDate;
-        let lastDate;
-        let step;
+        let firstDate = 0;
+        let lastDate = 0;
+        let step = 1;
         let sliceText;
-        let lineDate;
+        let lineDate = '';
+        let sliceStartStop: number[] = []
+
+        const sliceTextNew = ( lineDate: string, sliceStartStop: number[] ) => {
+            lineDate.slice( ...sliceStartStop )
+        }
 
         // days step
-        if (this.dataReduced[0][this.date].length === 24){
+        if ( ( this.dataReduced[0][this.date] as string ).length === 24){
             firstDate = new Date( this.start.slice(0,10) ).getTime();
             lastDate = new Date( this.end.slice(0,10) ).getTime();
             step = this.MILISECONDS_FOR_ONE_DAY;
-            sliceText = ( lineDate ) => lineDate.slice( -2 );
+            sliceStartStop = [ -2 ]
+            sliceText = ( lineDate: string ) => lineDate.slice( -2 );
         }
 
         // year step
-        if (this.dataReduced[0][this.date].length === 10){
+        if ( ( this.dataReduced[0][this.date] as string ).length === 10){
             firstDate = new Date( this.start ).getFullYear() + 1;
             lastDate  = new Date( this.end   ).getFullYear();
             step = 1;
-            sliceText = ( lineDate ) => lineDate.slice( 0, 4 );
+            sliceStartStop = [ 0, 4 ]
+            sliceText = ( lineDate: string ) => lineDate.slice( 0, 4 );
         }
 
 
         for (let lineStep = firstDate; lineStep <= lastDate; lineStep = lineStep + step ) {
 
             // days step
-            if (this.dataReduced[0][this.date].length === 24){
+            if ( ( this.dataReduced[0][this.date] as string ).length === 24){
                 lineDate = new Date ( lineStep ).toISOString().slice(0, 10);
             }
 
             // year step
-            if (this.dataReduced[0][this.date].length === 10){
+            if ( ( this.dataReduced[0][this.date] as string ).length === 10){
                 lineDate = `${lineStep}-01-01`;
             }
 
@@ -512,13 +529,13 @@ export default class Draw {
             this.ctx.font = '12px Arial';
             this.ctx.textAlign = 'left';
             this.ctx.fillStyle = 'white';
-            this.ctx.fillText( `${ sliceText( lineDate ) }`, this.xPositionFromDate(lineDate), this.graphSpaceBtn );
+            this.ctx.fillText( `${ sliceTextNew( lineDate, sliceStartStop ) }`, this.xPositionFromDate(lineDate), this.graphSpaceBtn );
         }
         this.ctx.stroke();
     }
 
     // calculate day number started from 0
-    xValueFromDate( date ) {
+    xValueFromDate( date: string ) {
         const myDate = new Date( date );
         // [minutes_test]
         //get MILISECONDS_FOR_ONE_DAY() { return 1000 * 60 * 60 * 24 };
@@ -526,7 +543,7 @@ export default class Draw {
         return dayNumber - this.firstDayNumber();
     }
 
-    textHeader(graphNumber) {
+    textHeader( graphNumber: number ) {
         this.ctx.font = '20px Arial';
         this.ctx.fillStyle = this.color;
         this.ctx.textBaseline = 'top';
@@ -539,7 +556,7 @@ export default class Draw {
     }
 
     // lines + text for axes X, Y
-    textAndAxesXY(number, graphNumber) {
+    textAndAxesXY(number: number, graphNumber: number) {
 
         const Y = this.clientHeight - this.graphSpaceBtn  - (this.clientHeight - 2 * this.graphSpaceBtn ) * number / 10;
         const X = this.clientWidth  - this.graphSpaceLeft - (this.clientWidth  - 2 * this.graphSpaceLeft) * number / 10;
@@ -567,7 +584,7 @@ export default class Draw {
         this.ctx.textBaseline = 'hanging';
         this.ctx.textAlign = 'right';
             // different x text length for day and year graph
-            if ( this.dataReduced[0][this.date].length === 10){
+            if ( ( this.dataReduced[0][this.date] as string ).length === 10){
                 this.ctx.fillText(`${day}.${month}.`, 0, 0);
             } else {
                 this.ctx.fillText(`${ ('0' + hour).slice(-2) }:${ ('0' + minutes).slice(-2) }`, 0, 0);
@@ -600,11 +617,11 @@ export default class Draw {
     }
 
 
-    xPositionFromDate( date ){
+    xPositionFromDate( date: string ){
         return this.graphSpaceLeft + this.xValueFromDate(date) * (this.clientWidth  - 2 * this.graphSpaceLeft) / this.xLimit
     }
 
-    yPositionFromDate( value, min, max ){
+    yPositionFromDate( value: number, min: number, max: number ){
         return this.graphSpaceBtn + (max - value)         * (this.clientHeight - 2 * this.graphSpaceBtn ) / (max - min)
     }
 
@@ -615,16 +632,16 @@ export default class Draw {
         // clear canvas
         this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
 
-        this.graphSelect = (graphNumber) => {
+        this.graphSelect = (graphNumber: number) => {
             
             const { sourceField, color, style, width, header, group, lineStyle } = this.graphs[graphNumber];
             this.type = sourceField
             this.color = color
-            this.design = style
+            this.style = style
             this.lineWidth = width
             this.header = header
             this.group = group
-            this.lineDash = lineStyle   
+            this.lineStyle = lineStyle   
         }
 
         // show all graphs
@@ -637,16 +654,16 @@ export default class Draw {
 
         // values to graph
             this.ctx.beginPath();
-            this.ctx.setLineDash(this.lineDash);
+            this.ctx.setLineDash(this.lineStyle);
             this.ctx.strokeStyle = this.color;
             this.ctx.fillStyle = this.color; 
 
         // minutes step
             let minutesInOneDay = 1;
-            if (this.dataReduced[0][this.date].length === 24) minutesInOneDay = 24 * 60;
+            if ( (this.dataReduced[0][this.date] as string ).length === 24) minutesInOneDay = 24 * 60;
 
             // automatic lineWidth for 'area' type
-            if ( this.design === 'area' ) {
+            if ( this.style === 'area' ) {
                 const widthOfOneValue = (this.clientWidth - 2 * this.graphSpaceLeft) / ( this.xLimit * minutesInOneDay );
                 if (widthOfOneValue > 3) {
                     this.ctx.lineWidth = widthOfOneValue - 1
@@ -668,39 +685,38 @@ export default class Draw {
                 }
             }
 
-            const line = oneEntry => {
+            const line = (oneEntry: pureData) => {
 
                 // do not show direction if no wind
                 if ( this.graphs[graphNumber].sourceField === 'WindDir' && oneEntry[this.graphs[graphNumber].sourceField] === 360 ) return null;
 
                 // for graph type = area
-                if( this.design === 'dot') {
+                if( this.style === 'dot') {
 
                     //this.ctx.beginPath();
                     this.ctx.moveTo(
-                        this.xPositionFromDate(oneEntry[this.date]) + this.lineWidth,
-                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max)
+                        this.xPositionFromDate(oneEntry[this.date] as string) + this.lineWidth,
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max)
                     )
                     this.ctx.arc(
-                        this.xPositionFromDate(oneEntry[this.date]),
-                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max),
+                        this.xPositionFromDate(oneEntry[this.date] as string),
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max),
                         this.lineWidth,
                         0, 2 * Math.PI
                     )
                 }
 
-                if ( this.design === 'area' ) {
-                    //console.log(this.ctx.lineWidth)
-                    this.ctx.moveTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date]),
+                if ( this.style === 'area' ) {
+                    this.ctx.moveTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date] as string),
                                      this.clientHeight - this.graphSpaceBtn);
 
-                    this.ctx.lineTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date]),
-                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
+                    this.ctx.lineTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date] as string),
+                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max));
                 }
 
-                if (this.design === 'line') {
-                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField], min, max));
+                if (this.style === 'line') {
+                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date] as string),
+                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max));
                 }
             }
 
