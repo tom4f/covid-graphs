@@ -9,33 +9,63 @@
             "navName" : "testy"
         },
         "specific": [
-            {
-                "sourceField": "pozitivni_celkem",
-                "color": "lime",
-                "style": "area",
-                "width": 2,
-                "header": "pozitivni_celkem > 65let",
-                "group": 1,
-                "lineStyle": []
-            },
-            {
-                "sourceField": "pozitivni_dokoncene_ockovani_relativni_pocet",
-                "color": "orange",
-                "style": "line",
-                "width": 1,
-                "header": "pozitivni_dokoncene_ockovani_relativni_pocet > 65 let",
-                "group": 2,
-                "lineStyle": [1]
-            },
-            {
-                "sourceField": "pozitivni_dokoncene_ockovani",
-                "color": "red",
-                "style": "area",
-                "width": 2,
-                "header": "pozitivni_dokoncene_ockovani > 65 let",
-                "group": 1,
-                "lineStyle": []
-            }
+            [
+                {
+                    "sourceField": "pozitivni_celkem",
+                    "color": "lime",
+                    "style": "area",
+                    "width": 2,
+                    "header": "pozitivni_celkem > 65let",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pozitivni_dokoncene_ockovani_relativni_pocet",
+                    "color": "orange",
+                    "style": "line",
+                    "width": 1,
+                    "header": "pozitivni_dokoncene_ockovani_relativni_pocet > 65 let",
+                    "group": 2,
+                    "lineStyle": [1]
+                },
+                {
+                    "sourceField": "pozitivni_dokoncene_ockovani",
+                    "color": "red",
+                    "style": "area",
+                    "width": 2,
+                    "header": "pozitivni_dokoncene_ockovani > 65 let",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ],[
+                {
+                    "sourceField": "pozitivni_bez_ockovani_relativni_pocet",
+                    "color": "lime",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pozitivni_bez_ockovani_relativni_pocet > 65let",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pozitivni_dokoncene_ockovani_relativni_pocet",
+                    "color": "orange",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pozitivni_dokoncene_ockovani_relativni_pocet > 65 let",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pozitivni_posilujici_davka_relativni_pocet",
+                    "color": "red",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pozitivni_posilujici_davka_relativni_pocet > 65 let",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ]
         ]
     },
 
@@ -47,33 +77,35 @@
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-pozitivni.min.json"
         },
         "specific": [
-            {
-                "sourceField": "pozitivni_celkem",
-                "color": "white",
-                "style": "area",
-                "width": 2,
-                "header": "pozitivni_celkem",
-                "group": 1,
-                "lineStyle": []
-            },
-            {
-                "sourceField": "pozitivni_dokoncene_ockovani_relativni_pocet",
-                "color": "yellow",
-                "style": "line",
-                "width": 1,
-                "header": "pozitivni_dokoncene_ockovani_relativni_pocet",
-                "group": 2,
-                "lineStyle": [1]
-            },
-            {
-                "sourceField": "pozitivni_dokoncene_ockovani",
-                "color": "lime",
-                "style": "area",
-                "width": 2,
-                "header": "pozitivni_dokoncene_ockovani",
-                "group": 1,
-                "lineStyle": []
-            }
+            [
+                {
+                    "sourceField": "pozitivni_celkem",
+                    "color": "white",
+                    "style": "area",
+                    "width": 2,
+                    "header": "pozitivni_celkem",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pozitivni_dokoncene_ockovani_relativni_pocet",
+                    "color": "yellow",
+                    "style": "line",
+                    "width": 1,
+                    "header": "pozitivni_dokoncene_ockovani_relativni_pocet",
+                    "group": 2,
+                    "lineStyle": [1]
+                },
+                {
+                    "sourceField": "pozitivni_dokoncene_ockovani",
+                    "color": "lime",
+                    "style": "area",
+                    "width": 2,
+                    "header": "pozitivni_dokoncene_ockovani",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ]
         ]
     },
     {
@@ -84,24 +116,26 @@
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/testy-pcr-antigenni.min.json"
         },
         "specific": [
-            {
-                "sourceField": "pocet_PCR_testy",
-                "color": "lime",
-                "style": "area",
-                "width": 1,
-                "header": "pocet_PCR_testy",
-                "group": 1,
-                "lineStyle": []
-            },
-            {
-                "sourceField": "pocet_AG_testy",
-                "color": "rgba(255, 0, 0, 0.7)",
-                "style": "line",
-                "width": 1,
-                "header": "pocet_AG_testy",
-                "group": 1,
-                "lineStyle": []
-            }
+            [
+                {
+                    "sourceField": "pocet_PCR_testy",
+                    "color": "lime",
+                    "style": "area",
+                    "width": 1,
+                    "header": "pocet_PCR_testy",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pocet_AG_testy",
+                    "color": "rgba(255, 0, 0, 0.7)",
+                    "style": "line",
+                    "width": 1,
+                    "header": "pocet_AG_testy",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ]
         ]
     }
 ]

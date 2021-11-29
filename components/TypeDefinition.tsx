@@ -1,3 +1,5 @@
+import { ReactElement } from 'react'
+
 export type BigStyledLi = {
     isActivePath: boolean;
 }
@@ -12,10 +14,9 @@ export type NavType = {
     allPaths: onePathType[];
 }
 
-export type LayoutType = {
-    children: JSX.Element;
-    allPaths: onePathType[];
-}
+
+
+
 
 export type specificType = {
     sourceField: string;
@@ -36,35 +37,51 @@ export type commonType = {
     navName : string;  
 }
 
-export type graphConfigType = {
-    common: commonType;
-    specific: specificType[] ;
-    specific2?: specificType[] ;
-}
-
 export type pureData = {
     [key: string]:  number | string;
 }
 
-export type graphData = {
+export type graphConfigType = {
     common: commonType;
-    specific: any;
-    specific2: any;
+    specific: (specificType[])[] ;
+}
+
+export type graphDataType = {
+    common: commonType;
+    specific: (specificType[])[];
     data: pureData[];
 }
+
+export type oneGraphDataType = {
+    common: commonType;
+    specific: specificType[];
+    data: pureData[];
+}
+
+export type graphsDataType = {
+    graphsData: graphDataType[];
+}
+
+export type OneGraphType = {
+    graphData: oneGraphDataType;
+}
+
+
+
+
+
+
+
 
 export type allSettledType = {
     [key in 'status' | 'value' | 'reason']: any
 }
 
-export type OneGraphType = {
-    graphData: graphData;
+export type LayoutType = {
+    children:   JSX.Element;
+    allPaths:   onePathType[];
+    graphsData: graphsDataType
 }
-
-export type graphsDataType = {
-    graphsData: graphData[];
-}
-
 
 export type showGraphType = (
     canvas: HTMLCanvasElement,
@@ -83,4 +100,13 @@ export type MetaType = {
     title?: string;
     keywords?: string;
     description?: string;
+}
+
+export interface isAllDownloaded {
+    isAllDownloaded: boolean
+}
+
+export type GraphsProviderType = {
+    children: ReactElement,
+    graphsData: graphDataType[]
 }

@@ -1,13 +1,13 @@
-import { graphData, pureData, specificType } from "./TypeDefinition";
+import { oneGraphDataType, pureData, specificType, isAllDownloaded } from "./TypeDefinition";
 
-export default class Draw {
+export default class Draw implements isAllDownloaded {
 
     dataOrig       : pureData[]
     dataReduced    : pureData[]
-    date           : string
+    dateField      : string
     isAllDownloaded: boolean
     loadPocasi     : (startDate: string, stopDate: string) => Promise<pureData[]>
-    graphs         : specificType[]
+    graphsConfig   : specificType[]
     isAllDownloadedForOneGraph: boolean
     private ctx        : CanvasRenderingContext2D
     private ctx_pointer: CanvasRenderingContext2D
@@ -30,9 +30,7 @@ export default class Draw {
     lineStyle: number[] = []
 
     lineWidth = 1
-    graphSelect = (graphNumber: number) => {
-
-    }
+    graphSelect = (graphNumber: number) => {}
    
     max = 0
     min = 0
@@ -46,19 +44,19 @@ export default class Draw {
     xLimit = 0
 
     constructor(
-        //private canvas: HTMLCanvasElement | null,
-        public canvas        : HTMLCanvasElement,
-        public canvas_pointer: HTMLCanvasElement,
-        private graphData     : graphData
-    ) {
-        
+        private canvas        : HTMLCanvasElement,
+        private canvas_pointer: HTMLCanvasElement,
+        private graphData     : oneGraphDataType
+    ) { 
         this.canvas          = canvas;
         this.canvas_pointer  = canvas_pointer;
+        this.graphData       = graphData
+
         this.dataOrig        = graphData.data;
-        this.date            = graphData.common.dateField;
+        this.dateField       = graphData.common.dateField;
         this.isAllDownloaded = graphData.common.isAllDownloaded;
         this.loadPocasi      = graphData.common.loadDataFunction;
-        this.graphs          = graphData.specific;
+        this.graphsConfig    = graphData.specific;
         
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
@@ -104,8 +102,8 @@ export default class Draw {
         // also for refresh:
         this.refresh = () => {
        
-            this.start = this.dataReduced[0][this.date] as string;
-            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date] as string;
+            this.start = this.dataReduced[0][this.dateField] as string;
+            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.dateField] as string;
             this.xLimit = this.lastDayNumber() - this.firstDayNumber();
 
             const graphArray = ( selectGroup: number) => {
@@ -113,10 +111,10 @@ export default class Draw {
 
                 this.dataReduced.forEach( pureData => {
 
-                    for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
-                        const source = this.graphs[graphNumber].sourceField;
+                    for (let graphNumber = 0; graphNumber < this.graphsConfig.length; graphNumber++) {
+                        const source = this.graphsConfig[graphNumber].sourceField;
                         
-                        if(this.graphs[graphNumber].group === selectGroup){
+                        if(this.graphsConfig[graphNumber].group === selectGroup){
                             if ( isNaN( pureData[source] as number ) ) {
                                 return null
                             } else {
@@ -276,7 +274,7 @@ export default class Draw {
         const updatedDate  = new Date( dateBeforeModification.setDate( dateBeforeModification.getDate() + move )  ); 
         // get new filtered data array
         const dataReduced = this.dataOrig.filter( (value) => {
-            const oneDate = new Date( value[this.date] );
+            const oneDate = new Date( value[this.dateField] );
             if ( startOrEnd === 'start' ) return ( oneDate >= updatedDate ) && ( oneDate <= new Date(this.end)   );
             if ( startOrEnd === 'end'   ) return ( oneDate <= updatedDate ) && ( oneDate >= new Date(this.start) );
             return null;
@@ -341,7 +339,7 @@ export default class Draw {
             const shortDate = this.getTextDateFromNewDate( new Date(dayNumberInMs) );
             const dayText = () => {
                     // different x text for day and year graph
-                    if ( ( this.dataReduced[0][this.date] as string ).length === 10){
+                    if ( ( this.dataReduced[0][this.dateField] as string ).length === 10){
                         return shortDate.slice(0,10)
                     } else {
                         const [, month, day] = shortDate.slice(0,10).split('-')
@@ -351,7 +349,7 @@ export default class Draw {
 
                // search entry with datum
             const valueY = (this.dataReduced).find( value =>
-                [ shortDate, shortDate.split('T')[0] ].includes( value[this.date] as string ));
+                [ shortDate, shortDate.split('T')[0] ].includes( value[this.dateField] as string ));
 
             const showInfo = () => {
 
@@ -404,16 +402,16 @@ export default class Draw {
                     this.ctx_pointer.fillText(` ${ valueY && valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
                 }
                 // calculate y for graph 
-                const firstInfoType  = this.graphs[0].sourceField;
+                const firstInfoType  = this.graphsConfig[0].sourceField;
                 const y = this.yPositionFromDate( valueY ? valueY[firstInfoType] as number : 0, this.min, this.max);
                 infoLeftY( firstInfoType, y );
 
-                if (this.graphs.length === 1) return null;
+                if (this.graphsConfig.length === 1) return null;
 
                 // 2nd graph in canvas
                 let ySecond = 0;
-                const secondInfoType = this.graphs[1].sourceField;
-                const secondGroup = this.graphs[1].group
+                const secondInfoType = this.graphsConfig[1].sourceField;
+                const secondGroup = this.graphsConfig[1].group
                 if (secondGroup === 1) ySecond = this.yPositionFromDate( valueY ? valueY[secondInfoType] as number : 0, this.min, this.max);
                 if (secondGroup === 2) ySecond = this.yPositionFromDate( valueY ? valueY[secondInfoType] as number : 0, this.minSecond, this.maxSecond);
                 infoRightY(secondInfoType, ySecond);
@@ -488,11 +486,11 @@ export default class Draw {
         let sliceStartStop: number[] = []
 
         const sliceTextNew = ( lineDate: string, sliceStartStop: number[] ) => {
-            lineDate.slice( ...sliceStartStop )
+            return lineDate.slice( ...sliceStartStop )
         }
 
         // days step
-        if ( ( this.dataReduced[0][this.date] as string ).length === 24){
+        if ( ( this.dataReduced[0][this.dateField] as string ).length === 24){
             firstDate = new Date( this.start.slice(0,10) ).getTime();
             lastDate = new Date( this.end.slice(0,10) ).getTime();
             step = this.MILISECONDS_FOR_ONE_DAY;
@@ -501,7 +499,7 @@ export default class Draw {
         }
 
         // year step
-        if ( ( this.dataReduced[0][this.date] as string ).length === 10){
+        if ( ( this.dataReduced[0][this.dateField] as string ).length === 10){
             firstDate = new Date( this.start ).getFullYear() + 1;
             lastDate  = new Date( this.end   ).getFullYear();
             step = 1;
@@ -513,12 +511,12 @@ export default class Draw {
         for (let lineStep = firstDate; lineStep <= lastDate; lineStep = lineStep + step ) {
 
             // days step
-            if ( ( this.dataReduced[0][this.date] as string ).length === 24){
+            if ( ( this.dataReduced[0][this.dateField] as string ).length === 24){
                 lineDate = new Date ( lineStep ).toISOString().slice(0, 10);
             }
 
             // year step
-            if ( ( this.dataReduced[0][this.date] as string ).length === 10){
+            if ( ( this.dataReduced[0][this.dateField] as string ).length === 10){
                 lineDate = `${lineStep}-01-01`;
             }
 
@@ -584,7 +582,7 @@ export default class Draw {
         this.ctx.textBaseline = 'hanging';
         this.ctx.textAlign = 'right';
             // different x text length for day and year graph
-            if ( ( this.dataReduced[0][this.date] as string ).length === 10){
+            if ( ( this.dataReduced[0][this.dateField] as string ).length === 10){
                 this.ctx.fillText(`${day}.${month}.`, 0, 0);
             } else {
                 this.ctx.fillText(`${ ('0' + hour).slice(-2) }:${ ('0' + minutes).slice(-2) }`, 0, 0);
@@ -634,7 +632,7 @@ export default class Draw {
 
         this.graphSelect = (graphNumber: number) => {
             
-            const { sourceField, color, style, width, header, group, lineStyle } = this.graphs[graphNumber];
+            const { sourceField, color, style, width, header, group, lineStyle } = this.graphsConfig[graphNumber];
             this.type = sourceField
             this.color = color
             this.style = style
@@ -645,7 +643,7 @@ export default class Draw {
         }
 
         // show all graphs
-        for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
+        for (let graphNumber = 0; graphNumber < this.graphsConfig.length; graphNumber++) {
 
             this.graphSelect(graphNumber);
 
@@ -660,7 +658,7 @@ export default class Draw {
 
         // minutes step
             let minutesInOneDay = 1;
-            if ( (this.dataReduced[0][this.date] as string ).length === 24) minutesInOneDay = 24 * 60;
+            if ( (this.dataReduced[0][this.dateField] as string ).length === 24) minutesInOneDay = 24 * 60;
 
             // automatic lineWidth for 'area' type
             if ( this.style === 'area' ) {
@@ -677,7 +675,7 @@ export default class Draw {
             let min = this.min;
             let max = this.max;
 
-            if (this.graphs.length > 1) {
+            if (this.graphsConfig.length > 1) {
                 if (this.group === 2 )
                 {
                     min = this.minSecond;
@@ -688,35 +686,35 @@ export default class Draw {
             const line = (oneEntry: pureData) => {
 
                 // do not show direction if no wind
-                if ( this.graphs[graphNumber].sourceField === 'WindDir' && oneEntry[this.graphs[graphNumber].sourceField] === 360 ) return null;
+                if ( this.graphsConfig[graphNumber].sourceField === 'WindDir' && oneEntry[this.graphsConfig[graphNumber].sourceField] === 360 ) return null;
 
                 // for graph type = area
                 if( this.style === 'dot') {
 
                     //this.ctx.beginPath();
                     this.ctx.moveTo(
-                        this.xPositionFromDate(oneEntry[this.date] as string) + this.lineWidth,
-                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max)
+                        this.xPositionFromDate(oneEntry[this.dateField] as string) + this.lineWidth,
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphsConfig[graphNumber].sourceField] as number, min, max)
                     )
                     this.ctx.arc(
-                        this.xPositionFromDate(oneEntry[this.date] as string),
-                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max),
+                        this.xPositionFromDate(oneEntry[this.dateField] as string),
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphsConfig[graphNumber].sourceField] as number, min, max),
                         this.lineWidth,
                         0, 2 * Math.PI
                     )
                 }
 
                 if ( this.style === 'area' ) {
-                    this.ctx.moveTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date] as string),
+                    this.ctx.moveTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.dateField] as string),
                                      this.clientHeight - this.graphSpaceBtn);
 
-                    this.ctx.lineTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.date] as string),
-                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max));
+                    this.ctx.lineTo( this.ctx.lineWidth / 2 + this.xPositionFromDate(oneEntry[this.dateField] as string),
+                                     this.yPositionFromDate(oneEntry[this.graphsConfig[graphNumber].sourceField] as number, min, max));
                 }
 
                 if (this.style === 'line') {
-                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date] as string),
-                                     this.yPositionFromDate(oneEntry[this.graphs[graphNumber].sourceField] as number, min, max));
+                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.dateField] as string),
+                                     this.yPositionFromDate(oneEntry[this.graphsConfig[graphNumber].sourceField] as number, min, max));
                 }
             }
 

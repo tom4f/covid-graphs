@@ -1,37 +1,36 @@
 import { OneGraph } from './../components/OneGraph'
 import { Meta }     from './../components/Meta' 
-import { Fragment } from 'react'
-import { graphsDataType, specificType } from './TypeDefinition'
+import { Fragment, useContext } from 'react'
+import { specificType } from './TypeDefinition'
+import { GraphsContext } from './GraphsContext'
 
-export const OnePage = ( { graphsData }: graphsDataType ) => {
+export const OnePage = () => {
 
-    const metaDesc = graphsData.map( graph => {
-        const specificHeader  = graph.specific.map( (spec: specificType) => spec.header ).join( ', ' )
-        if ( !graph.specific2 ) return specificHeader
-        
-        const specificHeader2 = graph.specific2.map( (spec: specificType) => spec.header ).join( ', ' )
-        return `${specificHeader}, ${specificHeader2}`
+    const graphsData = useContext( GraphsContext )
+
+    const metaDesc = graphsData.map( graph => {      
+
+        const specificHeader  = graph.specific[0].map( (specific: specificType) => specific.header ).join( ', ' )
+        return specificHeader
+
     })
 
     return (
         <>
             <Meta title={ graphsData[0].common.title } keywords={ metaDesc.join( ', ' ) } />
             {
-                graphsData.map( (graphData, index) => graphData.data && (
-                        <Fragment key={index}>
-                            <OneGraph key={index--} graphData={graphData}/>
-                            { graphData.specific2 &&
+                graphsData.map( (graphData, index) => (
+                    <Fragment key={index}>          
+                        {
+                            graphData.specific.map( oneSpecific => 
                                 <OneGraph
-                                    key={index}
-                                    graphData={ ({
-                                        ...graphData,
-                                        specific: graphData.specific2
-                                    } ) }
+                                    key={index--}
+                                    graphData={ ({ ...graphData, specific: oneSpecific  } ) }
                                 />
-                            }
-                        </Fragment>
-                    )
-                )
+                            )
+                        }              
+                    </Fragment>
+                ))
             }
         </>
     )

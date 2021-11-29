@@ -4,8 +4,10 @@ import { Footer } from './Footer'
 import React from 'react'
 import { LayoutType } from './TypeDefinition'
 
-export const Layout = ( { children, allPaths }: LayoutType ) => {
+export const Layout = ( props: LayoutType ) => {
   
+    const { children, allPaths, graphsData } = props
+
     return (
         <>
             <Meta />
