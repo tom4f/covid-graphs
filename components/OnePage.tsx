@@ -8,18 +8,19 @@ export const OnePage = () => {
 
     const graphsData = useContext( GraphsContext )
 
-    const metaDesc = graphsData.map( graph => {      
+    let metaDesc = ''
 
-        const specificHeader  = graph.specific[0].map( (specific: specificType) => specific.header ).join( ', ' )
-        return specificHeader
-
-    })
+    graphsData.map( graphData =>
+        graphData.specific.map( oneCurve =>
+            oneCurve.map( oneCurve => metaDesc += `${oneCurve.header}, `) 
+        )
+    )
 
     return (
         <>
-            <Meta title={ graphsData[0].common.title } keywords={ metaDesc.join( ', ' ) } />
+            <Meta title={ graphsData[0].common.title } keywords={ metaDesc } />
             {
-                graphsData.map( (graphData, index) => (
+                graphsData[0].data && graphsData.map( (graphData, index) => (
                     <Fragment key={index}>          
                         {
                             graphData.specific.map( oneSpecific => 

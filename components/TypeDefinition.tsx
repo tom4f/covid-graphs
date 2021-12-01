@@ -1,4 +1,9 @@
 import { ReactElement } from 'react'
+import { ParsedUrlQuery } from 'querystring'
+
+export interface urlQueryType extends ParsedUrlQuery {
+    page: string
+}
 
 export type BigStyledLi = {
     isActivePath: boolean;
@@ -31,7 +36,7 @@ export type specificType = {
 export type commonType = {
     dateField: string
     isAllDownloaded: boolean;
-    loadDataFunction: any;
+    loadDataFunction?: (startDate: string, endDate: string ) => Promise<pureData[]>;
     url: string;
     title: string;
     navName : string;  
@@ -90,11 +95,7 @@ export type showGraphType = (
 ) => void
 
 
-import { ParsedUrlQuery } from 'querystring'
 
-export interface IParams extends ParsedUrlQuery {
-    page: string
-}
 
 export type MetaType = {
     title?: string;

@@ -1,10 +1,12 @@
 import fs from 'fs'
 import path from 'path'
-import { graphConfigType } from './TypeDefinition'
+import { graphConfigType, urlQueryType } from './TypeDefinition'
 
 
-export const getStaticPropsLogic = async ( { page }: { page: string }  ) => {
+export const getStaticPropsLogic = async ( props: urlQueryType ) => {
 
+    const { page } =  props
+    
     const files = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', page + '.json' ), 'utf-8' )     
     const graphsConfig: graphConfigType[] = JSON.parse( graphsConfigJson )

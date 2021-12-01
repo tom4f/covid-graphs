@@ -3,7 +3,6 @@
         "common": {
             "dateField": "datum",
             "isAllDownloaded": true,
-            "loadDataFunction": null,
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-jip.min.json",
             "title": "Covid Vaccination Graphs Czech Republic",
             "navName" : "JIP"

@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import { graphDataType, GraphsProviderType } from './TypeDefinition'
 
-export const defaultGraphsData = 
+export const defaultGraphsData: graphDataType[] = 
   [
       {
           data: [
@@ -17,7 +17,7 @@ export const defaultGraphsData =
         common: {
             dateField: "datum",
             isAllDownloaded: true,
-            loadDataFunction: null,
+
             url: "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani-jip.min.json",
             title: "Covid Vaccination Graphs Czech Republic",
             navName : "JIP",
@@ -38,7 +38,7 @@ export const defaultGraphsData =
       }
   ]
 
-export const GraphsContext = createContext< graphDataType[] >( (defaultGraphsData as any) as graphDataType[] );
+export const GraphsContext = createContext< graphDataType[] >( defaultGraphsData );
 
 export const GraphsProvider = ( { children, graphsData }: GraphsProviderType ) => {
 

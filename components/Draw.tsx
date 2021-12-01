@@ -6,7 +6,7 @@ export default class Draw implements isAllDownloaded {
     dataReduced    : pureData[]
     dateField      : string
     isAllDownloaded: boolean
-    loadPocasi     : (startDate: string, stopDate: string) => Promise<pureData[]>
+    loadPocasi     : ( (startDate: string, stopDate: string) => Promise<pureData[]> ) | undefined
     graphsConfig   : specificType[]
     isAllDownloadedForOneGraph: boolean
     private ctx        : CanvasRenderingContext2D
@@ -207,7 +207,7 @@ export default class Draw implements isAllDownloaded {
         // click on button detection
         const click = (event: MouseEvent | TouchEvent) => {
 
-            const evenRetyped: any = event
+            const evenRetyped = event as any
 
             const x = evenRetyped.offsetX || evenRetyped.layerX;
             const y = evenRetyped.offsetY || evenRetyped.layerY;
@@ -287,9 +287,9 @@ export default class Draw implements isAllDownloaded {
     // download all
     async updateGraph(startOrEnd: string, move: number) {
         // promis AJAX query
-        if (this.isAllDownloaded === false) {
+        if (this.isAllDownloaded === false && this.loadPocasi) {
             try { 
-                this.dataOrig = await this.loadPocasi('1999-01-01', '2099-01-01');
+                this.dataOrig = await this.loadPocasi('1999-01-01', '2099-01-01') as pureData[];
                 this.isAllDownloaded = true;
             }
             catch (err) {
