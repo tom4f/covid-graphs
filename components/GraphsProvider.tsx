@@ -18,7 +18,7 @@ export const getStaticPropsLogic = async ( props: urlQueryType ) => {
     const graphsDataSettled = await Promise.allSettled( fetchList )
 
     const graphsDataFulfilled = graphsDataSettled.map( onePromise =>
-        onePromise.status === 'fulfilled' ? onePromise.value.data : ''
+        onePromise.status === 'fulfilled' ? onePromise.value['hydra:member'] : ''
     )
     
     const graphsData = graphsDataFulfilled.map( (data, index) =>

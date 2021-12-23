@@ -1,0 +1,118 @@
+[
+    {
+        "common": {
+            "dateField": "datum",
+            "isAllDownloaded": true,
+            "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/nakazeni-reinfekce?page=1&itemsPerPage=1000&apiToken=bac2935769ece6aa3301adbd41a756d2",
+            "title": "Covid Overview Graphs Czech Republic",
+            "navName" : "přehled"
+        },
+        "specific": [
+            [
+                {
+                    "sourceField": "nove_pripady",
+                    "color": "lime",
+                    "style": "area",
+                    "width": 2,
+                    "header": "nove_pripady",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "nove_hospitalizace",
+                    "color": "red",
+                    "style": "area",
+                    "width": 2,
+                    "header": "nove_hospitalizace",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "nove_jip",
+                    "color": "white",
+                    "style": "area",
+                    "width": 2,
+                    "header": "nove_jip",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ],
+            [
+                {
+                    "sourceField": "pripady_neockovani_neprodelali",
+                    "color": "lime",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pripady_neockovani_neprodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pripady_neockovani_prodelali",
+                    "color": "red",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pripady_neockovani_prodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pripady_ockovani_neprodelali",
+                    "color": "white",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pripady_ockovani_neprodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "pripady_ockovani_prodelali",
+                    "color": "orange",
+                    "style": "dot",
+                    "width": 2,
+                    "header": "pripady_ockovani_prodelali",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ],
+            [
+                {
+                    "sourceField": "jip_neockovani_neprodelali",
+                    "color": "red",
+                    "style": "line",
+                    "width": 2,
+                    "header": "jip_neockovani_neprodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "jip_ockovani_neprodelali",
+                    "color": "orange",
+                    "style": "line",
+                    "width": 2,
+                    "header": "jip_ockovani_neprodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "jip_ockovani_prodelali",
+                    "color": "lime",
+                    "style": "line",
+                    "width": 2,
+                    "header": "jip_ockovani_prodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "jip_neockovani_prodelali",
+                    "color": "white",
+                    "style": "line",
+                    "width": 2,
+                    "header": "jip_neockovani_prodelali",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ]
+        ]
+    }
+]
