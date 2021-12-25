@@ -1,0 +1,33 @@
+[
+    {
+        "common": {
+            "dateField": "datum",
+            "isAllDownloaded": true,
+            "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/hospitalizace?page=1&itemsPerPage=1000&apiToken=bac2935769ece6aa3301adbd41a756d2",
+            "title": "Covid Tests Graphs Czech Republic",
+            "navName" : "hospitalizace"
+        },
+        "specific": [
+            [
+                {
+                    "sourceField": "jip",
+                    "color": "white",
+                    "style": "line",
+                    "width": 2,
+                    "header": "jip",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "umrti",
+                    "color": "red",
+                    "style": "area",
+                    "width": 1,
+                    "header": "umrti",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ]
+        ]
+    }
+]

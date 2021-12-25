@@ -13,16 +13,25 @@
                     "sourceField": "pocet_PCR_testy",
                     "color": "lime",
                     "style": "area",
-                    "width": 2,
+                    "width": 1,
                     "header": "pocet_PCR_testy",
                     "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "incidence_pozitivni",
+                    "color": "white",
+                    "style": "line",
+                    "width": 2,
+                    "header": "incidence_pozitivni",
+                    "group": 2,
                     "lineStyle": []
                 },
                 {
                     "sourceField": "pocet_AG_testy",
                     "color": "red",
                     "style": "area",
-                    "width": 2,
+                    "width": 1,
                     "header": "pocet_AG_testy",
                     "group": 1,
                     "lineStyle": []

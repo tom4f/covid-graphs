@@ -41,35 +41,35 @@
                 {
                     "sourceField": "pripady_neockovani_neprodelali",
                     "color": "lime",
-                    "style": "dot",
-                    "width": 2,
+                    "style": "area",
+                    "width": 1,
                     "header": "pripady_neockovani_neprodelali",
                     "group": 1,
                     "lineStyle": []
                 },
                 {
-                    "sourceField": "pripady_neockovani_prodelali",
-                    "color": "red",
-                    "style": "dot",
-                    "width": 2,
-                    "header": "pripady_neockovani_prodelali",
-                    "group": 1,
-                    "lineStyle": []
-                },
-                {
                     "sourceField": "pripady_ockovani_neprodelali",
-                    "color": "white",
-                    "style": "dot",
-                    "width": 2,
+                    "color": "red",
+                    "style": "area",
+                    "width": 1,
                     "header": "pripady_ockovani_neprodelali",
                     "group": 1,
                     "lineStyle": []
                 },
                 {
+                    "sourceField": "pripady_neockovani_prodelali",
+                    "color": "white",
+                    "style": "line",
+                    "width": 1,
+                    "header": "pripady_neockovani_prodelali",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
                     "sourceField": "pripady_ockovani_prodelali",
-                    "color": "orange",
-                    "style": "dot",
-                    "width": 2,
+                    "color": "blue",
+                    "style": "line",
+                    "width": 1,
                     "header": "pripady_ockovani_prodelali",
                     "group": 1,
                     "lineStyle": []
