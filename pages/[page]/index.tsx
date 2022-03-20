@@ -16,12 +16,10 @@ export default function Home( props: graphsDataType ) {
     )
 }
 
+export const getStaticPaths: GetStaticPaths = async () => {
+    return getStaticPathsLogic()
+}
 
 export const getStaticProps: GetStaticProps = async ( context ) => {
     return getStaticPropsLogic( context.params as urlQueryType  )
-}
-
-
-export const getStaticPaths: GetStaticPaths = async () => {
-    return getStaticPathsLogic()
 }

@@ -7,12 +7,11 @@ export const getStaticPropsLogic = async ( props: urlQueryType ) => {
 
     const { page } =  props
     
-    const files = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', page + '.json' ), 'utf-8' )     
     const graphsConfig: graphConfigType[] = JSON.parse( graphsConfigJson )
 
     const urlList = graphsConfig.map( graphConfig => graphConfig.common.url )
-    const fetchList = urlList.map( url => fetch( url ).then( resp => resp.json() )  )
+    const fetchList = urlList.map( url => fetch(url).then( resp => resp.json() )  )
 
     
     const graphsDataSettled = await Promise.allSettled( fetchList )
@@ -25,6 +24,7 @@ export const getStaticPropsLogic = async ( props: urlQueryType ) => {
         ( { data, ...graphsConfig[index] } )
     )
 
+    const files = fs.readdirSync( path.join( process.cwd(), 'config' ) )
     const allPaths = files.map( filename => {
         const graphsConfigJson = fs.readFileSync( path.join(process.cwd(), 'config', filename ), 'utf-8' )     
         const graphsConfig =  JSON.parse( graphsConfigJson )

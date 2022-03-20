@@ -6,7 +6,7 @@ import { LayoutType } from './TypeDefinition'
 
 export const Layout = ( props: LayoutType ) => {
   
-    const { children, allPaths, graphsData } = props
+    const { children, allPaths } = props
 
     return (
         <>
