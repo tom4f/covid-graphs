@@ -21,11 +21,20 @@
                 {
                     "sourceField": "umrti",
                     "color": "red",
-                    "style": "area",
+                    "style": "line",
                     "width": 1,
                     "header": "umrti",
-                    "group": 1,
+                    "group": 2,
                     "lineStyle": []
+                },
+                {
+                    "sourceField": "pocet_hosp",
+                    "color": "yellow",
+                    "style": "line",
+                    "width": 1,
+                    "header": "pocet_hosp",
+                    "group": 1,
+                    "lineStyle": [1,1]
                 }
             ]
         ]
