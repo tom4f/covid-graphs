@@ -33,11 +33,15 @@ export default class Draw implements isAllDownloaded {
     graphSelect = (graphNumber: number) => {}
    
     max = 0
+    maxOrig = 0
     min = 0
     yLimit = 0
     maxSecond = 0
+    maxSecondOrig = 0
     minSecond = 0
     yLimitSecond = 0
+    yEmptySpacePercentage = 10
+    nrOfDigits = (nr: number) => Math.pow(10, ( `${Math.ceil(nr)}`.length - 1 ) )
 
     start = '01-01-2000'
     end   = '31-12-3000'
@@ -129,11 +133,13 @@ export default class Draw implements isAllDownloaded {
             }
 
             // for multiple graph - different Y
-            this.max = Math.max( ...graphArray( 1 ) );
+            this.maxOrig = Math.max( ...graphArray( 1 ))
+            this.max = Math.ceil( this.maxOrig / this.nrOfDigits(this.maxOrig) ) * this.nrOfDigits(this.maxOrig)
             this.min = Math.min( ...graphArray( 1 ) );
             this.yLimit = this.max - this.min;
 
-            this.maxSecond = Math.max( ...graphArray( 2 ) );
+            this.maxSecondOrig = Math.max( ...graphArray( 2 ))
+            this.maxSecond = Math.ceil( this.maxSecondOrig / this.nrOfDigits(this.maxSecondOrig) ) * this.nrOfDigits(this.maxSecondOrig)
             this.minSecond = Math.min( ...graphArray( 2 ) );
             this.yLimitSecond = this.maxSecond - this.minSecond;
 
