@@ -12,6 +12,7 @@ export const OneGraph = ( { graphData }: OneGraphType ) => {
     const loadPocasiAsync = () => {
         const canvas         = canvasRef.current;
         const canvas_pointer = canvas_pointerRef.current;
+        console.log(canvasRef)
 
         if (canvas && canvas_pointer) {
             const newDraw = new Draw( canvas, canvas_pointer, graphData ); 

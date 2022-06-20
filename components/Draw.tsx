@@ -85,19 +85,19 @@ export default class Draw implements isAllDownloaded {
         this.reducerStep = 1;
 
 
-        canvas_pointer.addEventListener('mousemove', (event) => this.getInfo(event.offsetX, event.offsetY) );
-        canvas_pointer.addEventListener('click',     (event) => this.button.click(event) );
-        canvas_pointer.addEventListener('mousedown', (event) => this.dynamicInterval(event));
-        canvas_pointer.addEventListener('mouseup',   ()      => {
+        canvas_pointer.addEventListener('pointermove', (event) => this.getInfo(event.offsetX, event.offsetY) );
+        //canvas_pointer.addEventListener('click',     (event) => this.button.click(event) );
+        canvas_pointer.addEventListener('pointerdown', (event) => this.dynamicInterval(event));
+        canvas_pointer.addEventListener('pointerup',   ()      => {
             this.reducerStep = 1;
             clearInterval(this.timer);
         });
         // for touch devicess (tablet)
-        canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event), { passive: false } );
-        canvas_pointer.addEventListener('touchend', () => {
-            this.reducerStep = 1;
-            clearInterval(this.timer);
-        });
+        //canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event), { passive: false } );
+        //canvas_pointer.addEventListener('touchend', () => {
+        //    this.reducerStep = 1;
+        //    clearInterval(this.timer);
+        //});
 
         // initial info position
         this.xForInfo = this.clientWidth  - this.graphSpaceLeft;
