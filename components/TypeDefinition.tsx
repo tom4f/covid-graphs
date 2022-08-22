@@ -36,19 +36,19 @@ export type specificType = {
 export type commonType = {
     dateField: string
     isAllDownloaded: boolean;
-    loadDataFunction?: (startDate: string, endDate: string ) => Promise<pureData[]>;
+    loadDataFunction?: (startDate: string, endDate: string) => Promise<pureData[]>;
     url: string;
     title: string;
-    navName : string;  
+    navName: string;
 }
 
 export type pureData = {
-    [key: string]:  number | string;
+    [key: string]: number | string;
 }
 
 export type graphConfigType = {
     common: commonType;
-    specific: (specificType[])[] ;
+    specific: (specificType[])[];
 }
 
 export type graphDataType = {
@@ -83,8 +83,8 @@ export type allSettledType = {
 }
 
 export type LayoutType = {
-    children:   JSX.Element;
-    allPaths:   onePathType[];
+    children: JSX.Element;
+    allPaths: onePathType[];
     graphsData: graphsDataType
 }
 

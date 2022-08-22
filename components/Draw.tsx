@@ -86,22 +86,12 @@ export default class Draw implements isAllDownloaded {
 
 
         canvas_pointer.addEventListener('pointermove', (event) => this.getInfo(event.offsetX, event.offsetY) );
-        //canvas_pointer.addEventListener('click',     (event) => this.button.click(event) );
         canvas_pointer.addEventListener('pointerdown', (event) => this.dynamicInterval(event));
-        canvas_pointer.addEventListener('pointerup',   ()      => {
-            this.reducerStep = 1;
-            clearInterval(this.timer);
-        });
-        // for touch devicess (tablet)
-        //canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event), { passive: false } );
-        //canvas_pointer.addEventListener('touchend', () => {
-        //    this.reducerStep = 1;
-        //    clearInterval(this.timer);
-        //});
+        canvas_pointer.addEventListener('pointerup',   ()      => clearInterval(this.timer));
 
         // initial info position
-        this.xForInfo = this.clientWidth  - this.graphSpaceLeft;
-        this.yForInfo = this.clientHeight - this.graphSpaceBtn;
+        this.xForInfo = this.clientWidth / 2;
+        this.yForInfo = this.clientHeight / 2;
 
         // also for refresh:
         this.refresh = () => {
@@ -150,7 +140,7 @@ export default class Draw implements isAllDownloaded {
 
 
     private dynamicInterval = (event: MouseEvent | TouchEvent) => {
-
+        this.reducerStep = 1;
         const resetInterval = () => {
             if ( this.reducerStep < 730 ) {
                 this.reducerStep *= 2
@@ -607,7 +597,7 @@ export default class Draw implements isAllDownloaded {
             yValue = ( this.minSecond + (this.yLimitSecond) * number / 10 );
         } 
 
-        let yValueRound = yValue > 100 ? yValue.toFixed(0) : yValue.toFixed(1)
+        let yValueRound = yValue < 10 ? yValue.toFixed(1) : yValue.toFixed(0)
 
         if (graphNumber === 0) {
             this.ctx.textAlign = 'right'
