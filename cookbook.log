@@ -54,5 +54,3 @@ git branch -M main
 git push -u origin main
 
 npm i -g vercel
-
-// test commit nr. 1 in branch test-branch-1
