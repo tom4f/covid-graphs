@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const path = require('path')
 module.exports = {
   reactStrictMode: true,
   images: {
@@ -16,5 +17,9 @@ module.exports = {
   compiler: {
     //Enables the styled-components SWC transform
     styledComponents: true
-  }
+  },
+  sassOptions: {
+    fiber: false,
+    includePaths: [path.join(__dirname, 'styles')],
+  },
 }
