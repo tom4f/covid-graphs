@@ -9,7 +9,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/prehled',
+        destination: '/lipno-graphs',
         permanent: true,
       },
     ]

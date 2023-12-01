@@ -6,7 +6,7 @@ export interface urlQueryType extends ParsedUrlQuery {
 }
 
 export type BigStyledLi = {
-    isActivePath: boolean;
+    $isactive: boolean;
 }
 
 type onePathType = {
@@ -38,6 +38,8 @@ export type commonType = {
     isAllDownloaded: boolean;
     loadDataFunction?: (startDate: string, endDate: string) => Promise<pureData[]>;
     url: string;
+    method: string;
+    methodData: {};
     title: string;
     navName: string;
 }

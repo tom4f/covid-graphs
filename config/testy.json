@@ -4,8 +4,10 @@
             "dateField": "datum",
             "isAllDownloaded": true,
             "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/testy-pcr-antigenni?page=1&itemsPerPage=1000&apiToken=bac2935769ece6aa3301adbd41a756d2",
+            "method": "GET",
+            "methodData": {},
             "title": "Covid Tests Graphs Czech Republic",
-            "navName" : "testy"
+            "navName": "testy"
         },
         "specific": [
             [

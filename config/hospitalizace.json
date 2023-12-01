@@ -3,9 +3,11 @@
         "common": {
             "dateField": "datum",
             "isAllDownloaded": true,
-            "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/hospitalizace?page=1&itemsPerPage=1000&apiToken=bac2935769ece6aa3301adbd41a756d2",
+            "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/hospitalizace?page=1&itemsPerPage=10000&datum%5Bafter%5D=2020-01-01&apiToken=bac2935769ece6aa3301adbd41a756d2",
+            "method": "GET",
+            "methodData": {},
             "title": "Covid Tests Graphs Czech Republic",
-            "navName" : "hospitalizace"
+            "navName": "hospitalizace"
         },
         "specific": [
             [
@@ -34,7 +36,10 @@
                     "width": 1,
                     "header": "pocet_hosp",
                     "group": 1,
-                    "lineStyle": [1,1]
+                    "lineStyle": [
+                        1,
+                        1
+                    ]
                 }
             ]
         ]
