@@ -26,6 +26,7 @@ export default function Nav({ allPaths }: NavType) {
                 <ul>
                     {
                         allPaths?.map((pathData, index) => (
+                            // using '$': see https://stackoverflow.com/questions/76935768/react-does-not-recognize-the-isactive-prop-on-a-dom-element
                             <StyledLi key={index} $isactive={pathData.isActivePath} >
                                 <Link href={`/${pathData.onePath}`}>{pathData.navName}</Link>
                             </StyledLi>

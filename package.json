@@ -1,6 +1,9 @@
 {
   "name": "83_covid-graphs",
   "private": true,
+  "engines": {
+    "node": "20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
