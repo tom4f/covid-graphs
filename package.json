@@ -2,7 +2,7 @@
   "name": "83_covid-graphs",
   "private": true,
   "engines": {
-    "node": "18"
+    "node": "22"
   },
   "scripts": {
     "dev": "next dev",

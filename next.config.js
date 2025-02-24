@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const path = require('path')
+const path = require('path');
 module.exports = {
   reactStrictMode: true,
   images: {
@@ -9,17 +9,17 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/lipno-graphs',
+        destination: '/davis-graphs',
         permanent: true,
       },
-    ]
+    ];
   },
   compiler: {
     //Enables the styled-components SWC transform
-    styledComponents: true
+    styledComponents: true,
   },
   sassOptions: {
     fiber: false,
     includePaths: [path.join(__dirname, 'styles')],
   },
-}
+};

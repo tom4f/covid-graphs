@@ -6,7 +6,8 @@
       "isAllDownloaded": false,
       "url": "https://www.frymburk.com/api/meteo/read_davis.php?orderBy=date&sort=ASC&startDate=2024-02-24&endDate=2025-02-24&requestType=date",
       "title": "Meteostanice Frymburk",
-      "navName": "Frymburk"
+      "navName": "Frymburk - multi",
+      "data": [{}]
     },
     "specific": [
       [
@@ -25,15 +26,6 @@
           "style": "line",
           "width": 1,
           "header": "temp_high [°C]",
-          "group": 1,
-          "lineStyle": []
-        },
-        {
-          "sourceField": "temp_mean",
-          "color": "white",
-          "style": "line",
-          "width": 1,
-          "header": "temp_mean [°C]",
           "group": 1,
           "lineStyle": []
         }
@@ -57,82 +49,65 @@
           "group": 1,
           "lineStyle": []
         }
-      ],
+      ]
+    ]
+  },
+  {
+    "common": {
+      "index": 1,
+      "dateField": "datum",
+      "isAllDownloaded": false,
+      "url": "https://www.frymburk.com/api/meteo/read_pocasi.php?orderBy=datum&sort=ASC&startDate=2024-02-24&endDate=2025-02-24&requestType=date",
+      "title": "Meteostanice Frymburk",
+      "navName": "Frymburk"
+    },
+    "specific": [
       [
         {
-          "sourceField": "bar_min",
-          "color": "green",
+          "sourceField": "pritok",
+          "color": "lime",
           "style": "line",
-          "width": 1,
-          "header": "bar_min [hPa]",
+          "width": 2,
+          "header": "pritok [m³/s]",
           "group": 1,
           "lineStyle": []
         },
         {
-          "sourceField": "bar_max",
+          "sourceField": "hladina",
           "color": "red",
           "style": "line",
-          "width": 1,
-          "header": "bar_max [hPa]",
-          "group": 1,
-          "lineStyle": []
-        },
-        {
-          "sourceField": "bar_avg",
-          "color": "white",
-          "style": "line",
-          "width": 1,
-          "header": "bar_avg [hPa]",
-          "group": 1,
-          "lineStyle": []
-        }
-      ],
-      [
-        {
-          "sourceField": "huminidy_min",
-          "color": "green",
-          "style": "line",
-          "width": 1,
-          "header": "huminidy_min [%]",
-          "group": 1,
-          "lineStyle": []
-        },
-        {
-          "sourceField": "huminidy_max",
-          "color": "ping",
-          "style": "line",
-          "width": 1,
-          "header": "huminidy_max [%]",
-          "group": 1,
-          "lineStyle": []
-        },
-        {
-          "sourceField": "huminidy_avg",
-          "color": "white",
-          "style": "line",
-          "width": 1,
-          "header": "huminidy_avg [%]",
-          "group": 1,
-          "lineStyle": []
-        }
-      ],
-      [
-        {
-          "sourceField": "rain_rate_max",
-          "color": "orange",
-          "style": "area",
-          "width": 5,
-          "header": "rain_rate_max [mm/h]",
-          "group": 1,
-          "lineStyle": []
-        },
-        {
-          "sourceField": "rain",
-          "color": "whitee",
-          "style": "area",
-          "width": 5,
-          "header": "rain [mm]",
+          "width": 2,
+          "header": "hladina [m n.m.]",
           "group": 2,
+          "lineStyle": []
+        },
+        {
+          "sourceField": "odtok",
+          "color": "white",
+          "style": "line",
+          "width": 2,
+          "header": "odtok [m³/s]",
+          "group": 1,
+          "lineStyle": []
+        }
+      ],
+      [
+        {
+          "sourceField": "voda",
+          "color": "white",
+          "style": "line",
+          "width": 2,
+          "header": "voda [°C]",
+          "group": 1,
+          "lineStyle": []
+        },
+        {
+          "sourceField": "vzduch",
+          "color": "lime",
+          "style": "line",
+          "width": 2,
+          "header": "vzduch ráno [°C]",
+          "group": 1,
           "lineStyle": []
         }
       ]
