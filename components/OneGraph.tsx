@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import Draw from './Draw';
 import oneGraphStyles from '../styles/OneGraph.module.scss';
-import { OneGraphType } from './TypeDefinition';
+import { SpecificGraphType, CommonDataWithGetDataFnType } from './OnePage';
 
 export const OneGraph = ({ graphData }: OneGraphType) => {
   const graphHeight = 300;
@@ -42,4 +42,13 @@ export const OneGraph = ({ graphData }: OneGraphType) => {
       />
     </article>
   );
+};
+
+export type OneGraphDataWithGetDataFn = {
+  common: CommonDataWithGetDataFnType;
+  specific: SpecificGraphType;
+};
+
+type OneGraphType = {
+  graphData: OneGraphDataWithGetDataFn;
 };

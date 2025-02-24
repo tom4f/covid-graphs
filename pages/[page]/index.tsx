@@ -1,22 +1,26 @@
-import { OnePage } from '../../components/OnePage'
-import { getStaticPropsLogic, getStaticPathsLogic } from '../../components/GraphsProvider'
+import { OnePage } from '../../components/OnePage';
+import {
+  getStaticPropsLogic,
+  getStaticPathsLogic,
+} from '../../components/GraphsProvider';
 
-import { graphDataType, urlQueryType } from '../../components/TypeDefinition'
-import { GetStaticPaths, GetStaticProps } from 'next'
-import { GraphsProvider } from '../../components/GraphsContext'
+import { urlQueryType } from '../../components/TypeDefinition';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { GraphsProvider } from '../../components/GraphsContext';
+import { GraphsDataWithGetDataFn } from '../../components/OnePage';
 
+const Home = ({ graphsData }: { graphsData: GraphsDataWithGetDataFn[] }) => (
+  <GraphsProvider graphsData={graphsData}>
+    <OnePage />
+  </GraphsProvider>
+);
 
- const Home = ( {graphsData}: {graphsData: graphDataType[]} ) => 
-    <GraphsProvider graphsData={graphsData}>
-        <OnePage />
-    </GraphsProvider>
-
-export default Home
+export default Home;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    return getStaticPathsLogic()
-}
+  return getStaticPathsLogic();
+};
 
-export const getStaticProps: GetStaticProps = async ( context ) => {
-    return getStaticPropsLogic( context.params as urlQueryType  )
-}
+export const getStaticProps: GetStaticProps = async (context) => {
+  return getStaticPropsLogic(context.params as urlQueryType);
+};

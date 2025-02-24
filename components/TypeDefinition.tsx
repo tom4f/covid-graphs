@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 
 export interface urlQueryType extends ParsedUrlQuery {
@@ -91,8 +90,3 @@ export type MetaType = {
 export interface isAllDownloaded {
   isAllDownloaded: boolean;
 }
-
-export type GraphsProviderType = {
-  children: ReactElement;
-  graphsData: graphDataType[];
-};
