@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import Draw from './Draw';
-import oneGraphStyles from '../styles/OneGraph.module.scss';
 import { SpecificGraphType, CommonDataWithGetDataFnType } from './OnePage';
+import styled from 'styled-components';
 
 export const OneGraph = ({ graphData }: OneGraphType) => {
   const graphHeight = 300;
@@ -34,13 +34,10 @@ export const OneGraph = ({ graphData }: OneGraphType) => {
   }, [graphData]);
 
   return (
-    <article className={oneGraphStyles.allGraphs}>
-      <canvas ref={canvasRef} className={oneGraphStyles.canvas} />
-      <canvas
-        ref={canvas_pointerRef}
-        className={oneGraphStyles.canvas_pointer}
-      />
-    </article>
+    <Article>
+      <CanvasGraph ref={canvasRef} />
+      <CanvasPointer ref={canvas_pointerRef} />
+    </Article>
   );
 };
 
@@ -52,3 +49,30 @@ export type OneGraphDataWithGetDataFn = {
 type OneGraphType = {
   graphData: OneGraphDataWithGetDataFn;
 };
+
+const Article = styled.article`
+  text-align: left;
+  background-color: black;
+
+  position: relative;
+  left: 0px;
+  height: 300px;
+
+  .canvas_pointer {
+    background: transparent;
+    position: absolute;
+    z-index: 2;
+  }
+`;
+
+const CanvasGraph = styled.canvas`
+  background: black;
+  position: absolute;
+  z-index: 1;
+`;
+
+const CanvasPointer = styled.canvas`
+  background: transparent;
+  position: absolute;
+  z-index: 2;
+`;

@@ -1,42 +1,102 @@
-import Link from 'next/link'
-import styled from 'styled-components'
-import navStyles from '../styles/Nav.module.scss'
-import { BigStyledLi, NavType } from './TypeDefinition'
+import Link from 'next/link';
+import styled from 'styled-components';
+import { OnePathType } from './GraphsProvider';
 
-const StyledLi = styled.li< BigStyledLi >`
-    ${({ $isactive }) => `
+export type NavType = {
+  allPaths: OnePathType[];
+};
+
+type BigStyledLi = {
+  $isactive: boolean;
+};
+
+export default function Nav({ allPaths }: NavType) {
+  return (
+    <Header>
+      <Logo>
+        <span>Covid</span>Graphs
+      </Logo>
+
+      <NavUi>
+        <ul>
+          {allPaths?.map((pathData, index) => (
+            <StyledLi key={index} $isactive={pathData.isActivePath}>
+              <Link href={`/${pathData.onePath}`}>{pathData.navName}</Link>
+            </StyledLi>
+          ))}
+          <AboutLi>
+            <Link href='https://tomas-blog.vercel.app'>About</Link>
+          </AboutLi>
+        </ul>
+      </NavUi>
+    </Header>
+  );
+}
+
+const StyledLi = styled.li<BigStyledLi>`
+  ${({ $isactive }) => `
         
             border-top: 2px solid ${$isactive ? 'red' : 'transparent'};
         
     `}
-    &:hover {
-        border-top: 2px solid rgba(255, 0, 0, 0.3);
+  &:hover {
+    border-top: 2px solid rgba(255, 0, 0, 0.3);
+  }
+`;
+
+const Header = styled.header`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+
+  & > * {
+    margin: 0;
+    height: 60px;
+    padding: 5px;
+  }
+`;
+
+const Logo = styled.h1`
+  line-height: 1.15;
+  font-size: 2.5rem;
+  color: red;
+
+  span {
+    color: #0070f3;
+  }
+`;
+
+const NavUi = styled.nav`
+  ul {
+    height: 100%;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+    flex-wrap: wrap;
+
+    li {
+      text-transform: capitalize;
+      padding-top: 5px;
     }
-`
 
-export default function Nav({ allPaths }: NavType) {
+    li a {
+      margin: 5px 15px;
+      color: grey;
+      text-decoration: none;
+      font-size: 17px;
 
-    return (
-        <header className={navStyles.nav_container} >
-            <h1 className={navStyles.logo} >
-                <span>Covid</span>Graphs
-            </h1>
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+`;
 
-            <nav className={navStyles.nav} >
-                <ul>
-                    {
-                        allPaths?.map((pathData, index) => (
-                            // using '$': see https://stackoverflow.com/questions/76935768/react-does-not-recognize-the-isactive-prop-on-a-dom-element
-                            <StyledLi key={index} $isactive={pathData.isActivePath} >
-                                <Link href={`/${pathData.onePath}`}>{pathData.navName}</Link>
-                            </StyledLi>
-                        ))
-                    }
-                    <li className={navStyles.aboutLi} >
-                        <Link href='https://tomas-blog.vercel.app'>About</Link>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-    )
-}
+const AboutLi = styled.li`
+  &:hover {
+    border-top: 2px solid rgba(255, 0, 0, 0.3);
+  }
+`;

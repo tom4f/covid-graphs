@@ -1,21 +1,26 @@
-import React, { createContext } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 import { GraphsDataWithGetDataFn } from './OnePage';
-import { ReactElement } from 'react';
 
 export const GraphsContext = createContext<GraphsDataWithGetDataFn[] | null>(
   null
 );
 
+type GraphsProviderType = {
+  children: ReactNode;
+  graphsData: GraphsDataWithGetDataFn[];
+};
+
 export const GraphsProvider = ({
   children,
   graphsData,
 }: GraphsProviderType) => (
-  <GraphsContext.Provider value={graphsData}>
-    {React.cloneElement(children, { graphsData })}
-  </GraphsContext.Provider>
+  <GraphsContext.Provider value={graphsData}>{children}</GraphsContext.Provider>
 );
 
-type GraphsProviderType = {
-  children: ReactElement;
-  graphsData: GraphsDataWithGetDataFn[];
+export const useGraphsContext = () => {
+  const context = useContext(GraphsContext);
+  if (context === null) {
+    throw new Error('useGraphsContext must be used within a GraphsProvider');
+  }
+  return context;
 };

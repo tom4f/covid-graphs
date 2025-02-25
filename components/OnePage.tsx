@@ -1,11 +1,10 @@
 import { OneGraph } from './../components/OneGraph';
 import { Meta } from './../components/Meta';
-import { useContext } from 'react';
-import { GraphsContext } from './GraphsContext';
 import { Fragment } from 'react';
+import { useGraphsContext } from './GraphsContext';
 
 export const OnePage = () => {
-  const graphsData = useContext(GraphsContext);
+  const graphsData = useGraphsContext();
 
   const metaDesc = graphsData
     ?.map((graphData) =>

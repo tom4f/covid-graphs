@@ -1,84 +1,81 @@
-import fs from 'fs';
-import path from 'path';
-import { graphConfigType, urlQueryType } from './TypeDefinition';
+import { configFiles } from '../config';
+import { ParsedUrlQuery } from 'querystring';
 
-export const getStaticPropsLogic = async (props: urlQueryType) => {
-  const { page } = props;
+export const getStaticPropsLogic = async (props: ParsedUrlQuery) => {
+  try {
+    const { page } = props;
+    const graphsConfig = configFiles[page as keyof typeof configFiles];
 
-  const graphsConfigJson = fs.readFileSync(
-    path.join(process.cwd(), 'config', page + '.json'),
-    'utf-8'
-  );
-  const graphsConfig: graphConfigType[] = JSON.parse(graphsConfigJson);
+    if (!graphsConfig) {
+      return { notFound: true };
+    }
 
-  const commonDataList = graphsConfig.map((graphConfig) => graphConfig.common);
+    const fetchList = graphsConfig
+      .map((graphConfig) => graphConfig.common)
+      .filter((commonData) => commonData.url)
+      .map(async (commonData) => {
+        try {
+          const response = await fetch(commonData.url, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (!response.ok)
+            throw new Error(`Failed to fetch: ${response.status}`);
 
-  const fetchList = commonDataList.map((commonData) =>
-    fetch(commonData.url, {
-      headers: {
-        'Content-type': 'application/json',
-      },
-      method: commonData.method,
-      ...(commonData.method === 'POST' && {
-        body: JSON.stringify(commonData.methodData),
-      }),
-    }).then((resp) => resp.json())
-  );
+          const json = await response.json();
+          return json['hydra:member'] || json;
+        } catch (error) {
+          console.error('Fetch error:', error);
+          return { error: true, message: (error as Error).message };
+        }
+      });
 
-  const graphsDataSettled = await Promise.allSettled(fetchList);
+    const graphsDataSettled = await Promise.allSettled(fetchList);
 
-  const graphsDataFulfilled = graphsDataSettled.map((onePromise) =>
-    onePromise.status === 'fulfilled'
-      ? onePromise.value['hydra:member'] || onePromise.value
-      : ''
-  );
-
-  const graphsData = graphsDataFulfilled.map((data, index) => ({
-    ...graphsConfig[index],
-    common: {
-      ...graphsConfig[index].common,
-      data,
-      //loadDataFunction,
-    },
-  }));
-
-  const files = fs.readdirSync(path.join(process.cwd(), 'config'));
-  const allPaths = files.map((filename) => {
-    const graphsConfigJson = fs.readFileSync(
-      path.join(process.cwd(), 'config', filename),
-      'utf-8'
+    const graphsDataFulfilled = graphsDataSettled.map((result) =>
+      result.status === 'fulfilled' && !result.value?.error
+        ? result.value
+        : null
     );
-    const graphsConfig = JSON.parse(graphsConfigJson);
 
-    const onePath = filename.replace('.json', '');
-    const navName = graphsConfig[0].common.navName;
-    const isActivePath = onePath === page ? true : false;
+    const graphsData = graphsConfig.map((config, index) => ({
+      ...config,
+      common: {
+        ...config.common,
+        data: graphsDataFulfilled[index],
+      },
+    }));
 
-    return {
-      onePath,
-      navName,
-      isActivePath,
-    };
-  });
+    const allPaths = Object.entries(configFiles)
+      .filter(([, graphs]) => graphs.length > 0)
+      .map(([onePath, graphs]) => ({
+        onePath,
+        navName: graphs[0]?.common?.navName || 'No Graphs',
+        isActivePath: onePath === page,
+      }))
+      .sort((a, b) => a.navName.localeCompare(b.navName));
 
-  return {
-    props: {
-      graphsData,
-      allPaths,
-    },
-    revalidate: 30,
-  };
+    return { props: { graphsData, allPaths }, revalidate: 30 };
+  } catch (error) {
+    console.error('Error in getStaticPropsLogic:', error);
+    return { notFound: true };
+  }
 };
 
 export const getStaticPathsLogic = async () => {
-  const graphConfigFiles = fs.readdirSync(path.join(process.cwd(), 'config'));
-  const paths = graphConfigFiles.map((filename) => ({
+  const paths = Object.keys(configFiles).map((key) => ({
     params: {
-      page: filename.replace('.json', ''),
+      page: key,
     },
   }));
+
   return {
     paths,
     fallback: false,
   };
+};
+
+export type OnePathType = {
+  onePath: string;
+  navName: string;
+  isActivePath: boolean;
 };
