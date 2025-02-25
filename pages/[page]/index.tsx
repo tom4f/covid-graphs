@@ -3,13 +3,16 @@ import {
   getStaticPropsLogic,
   getStaticPathsLogic,
 } from '../../components/GraphsProvider';
-
-import { urlQueryType } from '../../components/TypeDefinition';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { GraphsProvider } from '../../components/GraphsContext';
 import { GraphsDataWithGetDataFn } from '../../components/OnePage';
+import { ParsedUrlQuery } from 'querystring';
 
-const Home = ({ graphsData }: { graphsData: GraphsDataWithGetDataFn[] }) => (
+type HomeType = {
+  graphsData: GraphsDataWithGetDataFn[];
+};
+
+const Home = ({ graphsData }: HomeType) => (
   <GraphsProvider graphsData={graphsData}>
     <OnePage />
   </GraphsProvider>
@@ -17,10 +20,14 @@ const Home = ({ graphsData }: { graphsData: GraphsDataWithGetDataFn[] }) => (
 
 export default Home;
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return getStaticPathsLogic();
-};
+export const getStaticPaths: GetStaticPaths = async () => getStaticPathsLogic();
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  return getStaticPropsLogic(context.params as urlQueryType);
+  try {
+    const result = await getStaticPropsLogic(context.params as ParsedUrlQuery);
+    return result.notFound ? { notFound: true } : { props: result.props ?? {} };
+  } catch (error) {
+    console.error('Error during data fetching:', error);
+    return { notFound: true };
+  }
 };

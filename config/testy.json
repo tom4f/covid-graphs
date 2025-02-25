@@ -1,44 +1,43 @@
 [
-    {
-        "common": {
-            "dateField": "datum",
-            "isAllDownloaded": true,
-            "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/testy-pcr-antigenni?page=1&itemsPerPage=1000&apiToken=bac2935769ece6aa3301adbd41a756d2",
-            "method": "GET",
-            "methodData": {},
-            "title": "Covid Tests Graphs Czech Republic",
-            "navName": "testy"
+  {
+    "common": {
+      "index": 0,
+      "dateField": "datum",
+      "isAllDownloaded": true,
+      "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/testy-pcr-antigenni?page=1&itemsPerPage=1000&apiToken=bac2935769ece6aa3301adbd41a756d2",
+      "title": "Covid Tests Graphs Czech Republic",
+      "navName": "testy"
+    },
+    "specific": [
+      [
+        {
+          "sourceField": "pocet_PCR_testy",
+          "color": "lime",
+          "style": "area",
+          "width": 1,
+          "header": "pocet_PCR_testy",
+          "group": 1,
+          "lineStyle": []
         },
-        "specific": [
-            [
-                {
-                    "sourceField": "pocet_PCR_testy",
-                    "color": "lime",
-                    "style": "area",
-                    "width": 1,
-                    "header": "pocet_PCR_testy",
-                    "group": 1,
-                    "lineStyle": []
-                },
-                {
-                    "sourceField": "incidence_pozitivni",
-                    "color": "white",
-                    "style": "line",
-                    "width": 2,
-                    "header": "incidence_pozitivni",
-                    "group": 2,
-                    "lineStyle": []
-                },
-                {
-                    "sourceField": "pocet_AG_testy",
-                    "color": "red",
-                    "style": "area",
-                    "width": 1,
-                    "header": "pocet_AG_testy",
-                    "group": 1,
-                    "lineStyle": []
-                }
-            ]
-        ]
-    }
+        {
+          "sourceField": "incidence_pozitivni",
+          "color": "white",
+          "style": "line",
+          "width": 2,
+          "header": "incidence_pozitivni",
+          "group": 2,
+          "lineStyle": []
+        },
+        {
+          "sourceField": "pocet_AG_testy",
+          "color": "red",
+          "style": "area",
+          "width": 1,
+          "header": "pocet_AG_testy",
+          "group": 1,
+          "lineStyle": []
+        }
+      ]
+    ]
+  }
 ]

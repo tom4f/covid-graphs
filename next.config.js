@@ -9,7 +9,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/davis-graphs',
+        destination: '/davisGraphs',
         permanent: true,
       },
     ];

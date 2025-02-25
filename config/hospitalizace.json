@@ -1,47 +1,43 @@
 [
-    {
-        "common": {
-            "dateField": "datum",
-            "isAllDownloaded": true,
-            "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/hospitalizace?page=1&itemsPerPage=10000&datum%5Bafter%5D=2020-01-01&apiToken=bac2935769ece6aa3301adbd41a756d2",
-            "method": "GET",
-            "methodData": {},
-            "title": "Covid Tests Graphs Czech Republic",
-            "navName": "hospitalizace"
+  {
+    "common": {
+      "index": 0,
+      "dateField": "datum",
+      "isAllDownloaded": true,
+      "url": "https://onemocneni-aktualne.mzcr.cz/api/v3/hospitalizace?page=1&itemsPerPage=10000&datum%5Bafter%5D=2020-01-01&apiToken=bac2935769ece6aa3301adbd41a756d2",
+      "title": "Covid Tests Graphs Czech Republic",
+      "navName": "hospitalizace"
+    },
+    "specific": [
+      [
+        {
+          "sourceField": "jip",
+          "color": "white",
+          "style": "line",
+          "width": 2,
+          "header": "jip",
+          "group": 1,
+          "lineStyle": []
         },
-        "specific": [
-            [
-                {
-                    "sourceField": "jip",
-                    "color": "white",
-                    "style": "line",
-                    "width": 2,
-                    "header": "jip",
-                    "group": 1,
-                    "lineStyle": []
-                },
-                {
-                    "sourceField": "umrti",
-                    "color": "red",
-                    "style": "line",
-                    "width": 1,
-                    "header": "umrti",
-                    "group": 2,
-                    "lineStyle": []
-                },
-                {
-                    "sourceField": "pocet_hosp",
-                    "color": "yellow",
-                    "style": "line",
-                    "width": 1,
-                    "header": "pocet_hosp",
-                    "group": 1,
-                    "lineStyle": [
-                        1,
-                        1
-                    ]
-                }
-            ]
-        ]
-    }
+        {
+          "sourceField": "umrti",
+          "color": "red",
+          "style": "line",
+          "width": 1,
+          "header": "umrti",
+          "group": 2,
+          "lineStyle": []
+        },
+        {
+          "sourceField": "pocet_hosp",
+          "color": "yellow",
+          "style": "line",
+          "width": 1,
+          "header": "pocet_hosp",
+          "group": 1,
+          "lineStyle": [1, 1]
+        }
+      ]
+    ]
+  }
 ]

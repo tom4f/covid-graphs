@@ -1,0 +1,25 @@
+[
+  {
+    "common": {
+      "index": 0,
+      "dateField": "datum",
+      "isAllDownloaded": false,
+      "url": "https://www.frymburk.com/rekreace/api/pdo_read_pocasi_by_date.php",
+      "title": "Meteostanice Frymburk",
+      "navName": "Lipno"
+    },
+    "specific": [
+      [
+        {
+          "sourceField": "pritok",
+          "color": "lime",
+          "style": "line",
+          "width": 2,
+          "header": "pritok [m³/s]",
+          "group": 1,
+          "lineStyle": []
+        }
+      ]
+    ]
+  }
+]
